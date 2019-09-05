@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class ModelConvertUtils {
-	public static <T> T fromDB(Map<String, ? extends Object> map, Class<T> classOfItem)
+	public static <T> T mapToBean(Map<String, ? extends Object> map, Class<T> classOfItem)
 			throws IllegalArgumentException, IntrospectionException {
 		if (Character.class.isAssignableFrom(classOfItem) || String.class.isAssignableFrom(classOfItem)
 				|| Number.class.isAssignableFrom(classOfItem) || Boolean.class.isAssignableFrom(classOfItem)

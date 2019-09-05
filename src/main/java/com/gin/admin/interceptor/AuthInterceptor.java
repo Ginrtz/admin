@@ -20,14 +20,12 @@ import com.gin.admin.util.JwtUtil;
  */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-	/** http header中token的key,需和前端保持一致 */
-	final static String TOKEN_KEY = "X-Token";
 	@Autowired
 	private JwtUtil jwtUtil;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
-		String token = request.getHeader(TOKEN_KEY);
+		String token = request.getHeader(JwtUtil.TOKEN_KEY);
 		// 验证token
 		ResponseResult result = jwtUtil.checkToken(token);
 		if (result.getCode() != ResponseResult.CODE_SUCCESS) {

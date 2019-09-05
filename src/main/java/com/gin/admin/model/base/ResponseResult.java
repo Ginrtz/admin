@@ -22,6 +22,7 @@ public class ResponseResult {
 	private int code = CODE_SUCCESS;
 	private String message = "操作成功";
 	private Map<String, Object> data = new HashMap<>();
+	public static ResponseResult success = new ResponseResult();
 
 	public int getCode() {
 		return code;

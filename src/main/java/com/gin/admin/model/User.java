@@ -2,7 +2,9 @@ package com.gin.admin.model;
 
 import java.io.Serializable;
 
-import org.springframework.data.annotation.Transient;
+import com.gin.admin.dao.annotation.Column;
+import com.gin.admin.dao.annotation.Id;
+import com.gin.admin.dao.annotation.Table;
 
 /**
  * 用户
@@ -10,16 +12,25 @@ import org.springframework.data.annotation.Transient;
  * @author gin
  * @since 2019-07-03
  */
+@Table
 public class User implements Serializable {
-	@Transient
 	private static final long serialVersionUID = 1L;
+	@Id
+	@Column
 	private Integer id;
+	@Column
 	private String userName;
+	@Column
 	private String password;
+	@Column
 	private String nickName;
+	@Column
 	private String qqNo;
+	@Column
 	private String wxNo;
+	@Column
 	private String mobile;
+	@Column
 	private String email;
 
 	public Integer getId() {

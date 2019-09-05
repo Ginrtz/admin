@@ -174,7 +174,7 @@ public class ClassUtils {
 	public static void setFieldValue(Class<?> classOfType, String fieldName, Object obj, Object value)
 			throws IllegalArgumentException {
 		try {
-			Field field = classOfType.getField(fieldName);
+			Field field = classOfType.getDeclaredField(fieldName);
 			if (field == null) {
 				throw new IllegalArgumentException("Can not find field " + fieldName + " on " + classOfType.getName());
 			}
@@ -198,13 +198,13 @@ public class ClassUtils {
 	public static Object getFieldValue(Class<?> classOfType, String fieldName, Object obj)
 			throws IllegalArgumentException {
 		try {
-			Field field = classOfType.getField(fieldName);
+			Field field = classOfType.getDeclaredField(fieldName);
 			if (field == null) {
 				throw new IllegalArgumentException("Can not find field " + fieldName + " on " + classOfType.getName());
 			}
 			field.setAccessible(true);
 			Object value = field.get(obj);
-			field.setAccessible(false);
+			// field.setAccessible(false);
 			return value;
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Can not read value on " + classOfType.getName() + "." + fieldName);

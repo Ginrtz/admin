@@ -1026,8 +1026,8 @@ public class StringUtils {
 	/**
 	 * 替换字符串中的参数
 	 *
-	 * @param str
-	 * @param parameters
+	 * @param str        模板字符串
+	 * @param parameters 替换参数
 	 * @return
 	 */
 	public static String replaceParameter(String str, Map<String, ?> parameters) {
@@ -1053,9 +1053,9 @@ public class StringUtils {
 	/**
 	 * 替换字符串中的参数
 	 *
-	 * @param str
-	 * @param key
-	 * @param value
+	 * @param str   原字符串
+	 * @param key   替换的占位符,字符串中有${name}，则key为name
+	 * @param value 替换的值
 	 * @return
 	 */
 	public static String replaceParameter(String str, String key, String value) {
@@ -1067,8 +1067,8 @@ public class StringUtils {
 	/**
 	 * 替换字符串中的参数
 	 *
-	 * @param str
-	 * @param keyValues
+	 * @param str       原串
+	 * @param keyValues 替换参数，两两一对，old1,new1,odl2,new2...
 	 * @return
 	 */
 	public static String replaceParameter(String str, String... keyValues) {
@@ -1088,8 +1088,8 @@ public class StringUtils {
 	/**
 	 * 删除字符串
 	 *
-	 * @param str
-	 * @param array
+	 * @param str   原串
+	 * @param array 要删除的字串
 	 * @return
 	 */
 	public static String delete(String str, String[] array) {
@@ -1181,24 +1181,21 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String toSqlName(String javaName) {
-		StringBuilder sb = new StringBuilder();
-		for (char c : javaName.toCharArray()) {
-			if (c >= 'a' && c <= 'z') {
-				sb.append((char) (c - 32));
-			} else if (c >= 'A' && c <= 'Z') {
-				if (sb.length() > 0) {
-					sb.append("_");
-				}
-				sb.append(c);
-			} else if (c >= '0' && c <= '9') {
-				char last = sb.charAt(sb.length() - 1);
-				if (last > '9') {
-					sb.append("_");
-				}
-				sb.append(c);
+		if (isEmpty(javaName)) {
+			return "";
+		}
+		StringBuilder result = new StringBuilder();
+		result.append(javaName.substring(0, 1).toLowerCase());
+		for (int i = 1; i < javaName.length(); i++) {
+			String s = javaName.substring(i, i + 1);
+			String slc = s.toLowerCase();
+			if (!s.equals(slc)) {
+				result.append("_").append(slc);
+			} else {
+				result.append(s);
 			}
 		}
-		return sb.toString();
+		return result.toString();
 	}
 
 	/**
