@@ -11,12 +11,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MachineUtils {
-
 	private static Log logger = LogFactory.getLog(MachineUtils.class);
 
 	/**
 	 * 根据指定ip段,获取本机IPV4地址地址
-	 * 
+	 *
 	 * @param prefix
 	 * @return
 	 */
@@ -35,11 +34,11 @@ public class MachineUtils {
 
 	/**
 	 * 获取所有IPV4地址
-	 * 
+	 *
 	 * @return
 	 */
 	public static List<InetAddress> getIpAddressList() {
-		List<InetAddress> list = new ArrayList<InetAddress>();
+		List<InetAddress> list = new ArrayList<>();
 		try {
 			Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
 			while (en.hasMoreElements()) {
@@ -47,7 +46,6 @@ public class MachineUtils {
 				Enumeration<InetAddress> ias = ni.getInetAddresses();
 				while (ias.hasMoreElements()) {
 					InetAddress iaddr = ias.nextElement();
-
 					if (iaddr instanceof Inet4Address) {
 						if (iaddr.isSiteLocalAddress()) {
 							list.add(iaddr);
@@ -61,4 +59,7 @@ public class MachineUtils {
 		return list;
 	}
 
+	public static void main(String[] args) {
+		System.out.println(getIpAddressList());
+	}
 }

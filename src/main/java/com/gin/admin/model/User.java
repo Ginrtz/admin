@@ -2,15 +2,15 @@ package com.gin.admin.model;
 
 import java.io.Serializable;
 
-import com.gin.admin.dao.annotation.Column;
-import com.gin.admin.dao.annotation.Id;
-import com.gin.admin.dao.annotation.Table;
+import com.gin.nicedao.annotation.Column;
+import com.gin.nicedao.annotation.Id;
+import com.gin.nicedao.annotation.Table;
 
 /**
  * 用户
  *
  * @author gin
- * @since 2019-07-03
+ * @date 2019-07-03
  */
 @Table
 public class User implements Serializable {
