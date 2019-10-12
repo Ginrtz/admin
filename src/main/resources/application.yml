@@ -5,10 +5,7 @@ spring:
 ## datasource
   datasource:
     name: dataSource #数据源名称
-    dbtype: mysql #数据库类型mysql、oracle、sqlserver、postgresql
     type: com.alibaba.druid.pool.DruidDataSource
-#基本属性
-    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
     username: root
     password: 1234
@@ -45,6 +42,10 @@ spring:
         max-idle: 200
         max-wait: -1
         min-idle: 0
+##niceDao
+niceDao:
+  db-type: mysql #数据库类型mysql、oracle
+  base-packages: com.gin.admin
 ## 登录设置
 auth:
   excludeUrls:

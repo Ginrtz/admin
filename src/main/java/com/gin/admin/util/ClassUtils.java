@@ -280,11 +280,18 @@ public class ClassUtils {
 		if (obj instanceof Map) {
 			return ((Map) obj).get(name);
 		} else {
-			try {
-				return ClassUtils.invokeReadMethod(obj.getClass(), name, obj);
-			} catch (Exception e) {
-				return null;
+			Field[] fields = getAllFields(obj.getClass());
+			for (Field field : fields) {
+				if (field.getName().equals(name)) {
+					field.setAccessible(true);
+					try {
+						return field.get(obj);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						return null;
+					}
+				}
 			}
+			return null;
 		}
 	}
 
@@ -297,7 +304,7 @@ public class ClassUtils {
 	public static Field[] getAllFields(Class<?> classOfType) {
 		Field[] fields = classOfType.getDeclaredFields();
 		Class<?> superClass = classOfType.getSuperclass();
-		if (superClass != null) {
+		if (superClass != Object.class) {
 			List<Field> list = new ArrayList<>();
 			for (Field field : fields) {
 				if (!field.getName().equals("serialVersionUID")) {

@@ -17,22 +17,22 @@ import com.gin.nicedao.NiceDao;
 public class AdminApplicationTests {
 	@Autowired
 	private NiceDao dao;
+	@Autowired
+	private TestDao testDao;
 
 	@Test
 	public void test() {
-		User user = dao.findForObject(User.class, "select * from user where user_name=? and password=?", "admin",
-				"111111");
-		System.out.println(user);
+		testDao.test(1, "2");
 	}
 
 	@Test
 	public void test2() {
 		User user = new User();
-		user.setUserName("jerry");
+		user.setUserName("tom");
 		user.setPassword("111111");
-		user.setEmail("jerry@admin.com");
+		user.setEmail("tommy@admin.com");
 		user.setMobile("13712345678");
-		user.setNickName("jey");
+		user.setNickName("tommy");
 		user.setQqNo("123456");
 		user.setWxNo("wx_123456");
 		System.out.println(user);

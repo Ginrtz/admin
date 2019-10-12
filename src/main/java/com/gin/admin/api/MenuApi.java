@@ -21,7 +21,7 @@ public class MenuApi {
 
 	@RequestMapping("/list")
 	public ResponseResult list() {
-		List<Menu> menuList = dao.find(Menu.class, "select * from menu");
+		List<Menu> menuList = dao.getList(new Menu());
 		List<Menu> treeMenu = TreeBeanUtil.listToTreeList(menuList, null);
 		Map<String, Object> data = new HashMap<>();
 		data.put("items", treeMenu);

@@ -2,6 +2,7 @@ package com.gin.admin.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gin.nicedao.annotation.Column;
 import com.gin.nicedao.annotation.MapEntity;
 
@@ -9,6 +10,7 @@ public class Tree<T> {
 	@Column
 	private Integer parentId;
 	@MapEntity(fkField = "parentId")
+	@JsonIgnore
 	protected T parent;
 	@Column
 	protected Integer treeSort;

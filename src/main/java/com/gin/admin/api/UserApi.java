@@ -29,8 +29,8 @@ public class UserApi {
 		if (StringUtils.isEmpty(user.getUserName()) || StringUtils.isEmpty(user.getPassword())) {
 			return null;
 		}
-		User u = dao.findForObject(User.class, "select * from user where user_name=? and password=?",
-				user.getUserName(), user.getPassword());
+		User u = dao.find(User.class, "select * from user where user_name=? and password=?", user.getUserName(),
+				user.getPassword());
 		ResponseResult result = new ResponseResult();
 		if (u == null) {
 			result.setCode(ResponseResult.CODE_VERIFY_ERROR);
