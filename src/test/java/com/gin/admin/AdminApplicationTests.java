@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gin.admin.model.Menu;
@@ -14,16 +15,10 @@ import com.gin.nicedao.NiceDao;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ComponentScan(basePackages = { "com.gin.nicedao" })
 public class AdminApplicationTests {
 	@Autowired
 	private NiceDao dao;
-	@Autowired
-	private TestDao testDao;
-
-	@Test
-	public void test() {
-		testDao.test(1, "2");
-	}
 
 	@Test
 	public void test2() {

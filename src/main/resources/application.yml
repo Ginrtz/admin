@@ -2,11 +2,13 @@
 server:
   port: 8080 #端口号
 spring:
+  profiles:
+      active: default
 ## datasource
   datasource:
     name: dataSource #数据源名称
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
     username: root
     password: 1234
 #druid相关配置
@@ -39,13 +41,16 @@ spring:
     timeout: 1000
     jedis:
       pool:
-        max-idle: 200
+        max-idle: 3
         max-wait: -1
         min-idle: 0
+        max-active: 20
+##log4j2
+logging:
+  config: classpath:log4j2.xml
 ##niceDao
 niceDao:
-  db-type: mysql #数据库类型mysql、oracle
-  base-packages: com.gin.admin
+  db-type: mysql #数据库类型mysql、oracle、sqlserver
 ## 登录设置
 auth:
   excludeUrls:
