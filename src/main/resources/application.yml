@@ -1,6 +1,6 @@
 ## server
 server:
-  port: 8080 #端口号
+  port: 80 #端口号
 spring:
   profiles:
       active: default

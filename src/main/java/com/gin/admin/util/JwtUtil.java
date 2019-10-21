@@ -27,9 +27,9 @@ public class JwtUtil {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 	/** token秘钥 */
-	final static String base64EncodedSecretKey = "MWEyYjNjNGQ1ZQ==";
+	private final static String base64EncodedSecretKey = "MWEyYjNjNGQ1ZQ==";
 	/** 过期时间,测试使用十分钟 */
-	public final static long TOKEN_EXPIRES_MINUTES = 10;
+	private final static long TOKEN_EXPIRES_MINUTES = 10;
 	/** http header中token的key,需和前端保持一致 */
 	public final static String TOKEN_KEY = "X-Token";
 
