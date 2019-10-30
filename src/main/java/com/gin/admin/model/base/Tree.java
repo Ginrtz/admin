@@ -1,20 +1,23 @@
-package com.gin.admin.model;
+package com.gin.admin.model.base;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gin.nicedao.annotation.Column;
-import com.gin.nicedao.annotation.MapEntity;
 
 public class Tree<T> {
-	@Column
-	private Integer parentId;
-	@MapEntity(fkField = "parentId")
+	protected Long parentId;
 	@JsonIgnore
 	protected T parent;
-	@Column
 	protected Integer treeSort;
 	protected List<T> children;
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
 
 	public T getParent() {
 		return parent;

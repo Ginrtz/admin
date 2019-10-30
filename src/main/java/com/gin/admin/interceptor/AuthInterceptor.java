@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.gin.admin.model.base.ResponseResult;
+import com.gin.admin.model.base.ResResult;
 import com.gin.admin.util.JwtUtil;
 
 /**
@@ -27,8 +27,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
 		String token = request.getHeader(JwtUtil.TOKEN_KEY);
 		// 验证token
-		ResponseResult result = jwtUtil.checkToken(token);
-		if (result.getCode() != ResponseResult.CODE_SUCCESS) {
+		ResResult result = jwtUtil.checkToken(token);
+		if (result.getCode() != ResResult.CODE_SUCCESS) {
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/json; charset=utf-8");
 			PrintWriter writer = response.getWriter();

@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MachineUtils {
-	private static Log logger = LogFactory.getLog(MachineUtils.class);
+public class IpUtils {
+	private static Log logger = LogFactory.getLog(IpUtils.class);
 
 	/**
 	 * 根据指定ip段,获取本机IPV4地址地址

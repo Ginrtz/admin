@@ -62,7 +62,7 @@
 		<!-- 以下包中的log只打印WARN级别及以上的信息 -->
 		<logger name="org.springframework" level="WARN"/>
 		<logger name="org.hibernate" level="WARN"/>
-		<logger name="org.mybatis" level="WARN"/>
+		<logger name="org.apache" level="WARN"/>
 		<logger name="com.alibaba" level="WARN"/>
 		<logger name="io.netty" level="WARN"/>
 		<logger name="io.lettuce" level="WARN"/>

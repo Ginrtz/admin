@@ -1,11 +1,14 @@
 ## server
 server:
-  port: 80 #端口号
+  port: 9090 #端口号
+error:
+  debug: true
 spring:
   profiles:
       active: default
 ## datasource
   datasource:
+    db-type: mysql #数据库类型mysql、oracle、sqlserver
     name: dataSource #数据源名称
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
@@ -48,12 +51,9 @@ spring:
 ##log4j2
 logging:
   config: classpath:log4j2.xml
-##niceDao
-niceDao:
-  db-type: mysql #数据库类型mysql、oracle、sqlserver
 ## 登录设置
 auth:
   excludeUrls:
   - /user/login
   - /user/getkey
-  - /index
+  - /error

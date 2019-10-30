@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.gin.admin.model.User;
-import com.gin.admin.model.base.ResponseResult;
+import com.gin.admin.model.base.ResResult;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,10 +34,10 @@ public class JwtUtil {
 	public final static String TOKEN_KEY = "X-Token";
 
 	/**
-	 * 根据登录名生成token，并放入缓存
+	 * 根据用户生成token，并放入缓存
 	 *
-	 * @param userName
-	 * @return
+	 * @param user 登录用户
+	 * @return token
 	 */
 	public String getToken(User user) {
 		String token = Jwts.builder().setSubject(user.getUserName()) // 主题
@@ -54,7 +54,7 @@ public class JwtUtil {
 	 * 获取当前用户
 	 *
 	 * @param token
-	 * @return
+	 * @return 用户
 	 */
 	public User getCurrUser(HttpServletRequest request) {
 		String user_json = (String) redisTemplate.boundValueOps(getCurrToken(request)).get();
@@ -81,8 +81,8 @@ public class JwtUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public ResponseResult checkToken(String token) {
-		ResponseResult result = new ResponseResult();
+	public ResResult checkToken(String token) {
+		ResResult result = new ResResult();
 		try {
 			// 解析token，获取绑定的用户名
 			final Claims claims = Jwts.parser().setSigningKey(base64EncodedSecretKey).parseClaimsJws(token).getBody();
@@ -91,13 +91,13 @@ public class JwtUtil {
 			String token_server = (String) redisTemplate.boundValueOps(username).get();
 			// 没有找到，表示已超时被丢弃
 			if (StringUtils.isEmpty(token_server)) {
-				result.setCode(ResponseResult.CODE_TOKEN_INVALID);
+				result.setCode(ResResult.CODE_TOKEN_INVALID);
 				result.setMessage("登录超时");
 				return result;
 			}
 			// token和redis中保存的不同，表示重复生成了token，即多客户端登录
 			if (!token_server.equals(token)) {
-				result.setCode(ResponseResult.CODE_TOKEN_KICKED_OUT);
+				result.setCode(ResResult.CODE_TOKEN_KICKED_OUT);
 				result.setMessage("用户在其他地点登录");
 				return result;
 			}
@@ -106,7 +106,7 @@ public class JwtUtil {
 			redisTemplate.boundValueOps(token).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 		} catch (Exception e) {
 			// token校验失败，可能是伪造的token
-			result.setCode(ResponseResult.CODE_TOKEN_INVALID);
+			result.setCode(ResResult.CODE_TOKEN_INVALID);
 			result.setMessage("token无效");
 			return result;
 		}
@@ -119,10 +119,10 @@ public class JwtUtil {
 	 * @param username
 	 * @return
 	 */
-	public ResponseResult removeToken(String token) {
+	public ResResult removeToken(String token) {
 		final Claims claims = Jwts.parser().setSigningKey(base64EncodedSecretKey).parseClaimsJws(token).getBody();
 		final String username = claims.getSubject();
-		ResponseResult result = new ResponseResult();
+		ResResult result = new ResResult();
 		redisTemplate.delete(username);
 		redisTemplate.delete(token);
 		return result;

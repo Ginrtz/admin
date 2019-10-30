@@ -10,19 +10,22 @@ import java.util.Map;
  *
  * @author o1760
  */
-public class ResponseResult {
+public class ResResult {
 	/** 操作成功 */
 	public static final int CODE_SUCCESS = 200;
 	/** 用户名或密码错误 */
-	public static final int CODE_VERIFY_ERROR = 401;
+	public static final int CODE_VERIFY_ERROR = 40001;
 	/** token无效 */
-	public static final int CODE_TOKEN_INVALID = 403;
+	public static final int CODE_TOKEN_INVALID = 40003;
 	/** 用户在其他客户端登录 */
-	public static final int CODE_TOKEN_KICKED_OUT = 408;
+	public static final int CODE_TOKEN_KICKED_OUT = 40008;
+	/** 参数异常 */
+	public static final int CODE_PARAMETER_ERROR = 50001;
+
 	private int code = CODE_SUCCESS;
 	private String message = "操作成功";
 	private Map<String, Object> data = new HashMap<>();
-	public static ResponseResult success = new ResponseResult();
+	public static ResResult success = new ResResult();
 
 	public int getCode() {
 		return code;

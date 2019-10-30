@@ -10,27 +10,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ClassUtils {
-	/**
-	 * 将指定path添加到java.lang.ClassLoader 的java path中
-	 *
-	 * @param path
-	 */
-	public static void addJavaLibraryPath(String path) {
-		String[] paths = (String[]) getFieldValue(ClassLoader.class, "usr_paths", null);
-		for (String path2 : paths) {
-			if (path.equals(path2)) {
-				return;
-			}
-		}
-		String[] tmp = new String[paths.length + 1];
-		System.arraycopy(paths, 0, tmp, 0, paths.length);
-		tmp[paths.length] = path;
-		setFieldValue(ClassLoader.class, "usr_paths", null, tmp);
-	}
+
+	static Logger log = LoggerFactory.getLogger(ClassUtils.class);
 
 	/**
 	 * 获取指定方法
@@ -169,20 +158,19 @@ public class ClassUtils {
 	 * @param fieldName
 	 * @param obj
 	 * @param value
-	 * @throws IllegalArgumentException
 	 */
-	public static void setFieldValue(Class<?> classOfType, String fieldName, Object obj, Object value)
-			throws IllegalArgumentException {
+	public static void setFieldValue(Class<?> classOfType, String fieldName, Object obj, Object value) {
 		try {
-			Field field = classOfType.getDeclaredField(fieldName);
+			Field field = getField(classOfType, fieldName);
 			if (field == null) {
-				throw new IllegalArgumentException("Can not find field " + fieldName + " on " + classOfType.getName());
+				log.error("Can not find field " + fieldName + " on " + classOfType.getName());
+				return;
 			}
 			field.setAccessible(true);
 			field.set(obj, value);
 			field.setAccessible(false);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Can not set value on " + classOfType.getName() + "." + fieldName);
+			log.error("Can not set value on " + classOfType.getName() + "." + fieldName, e);
 		}
 	}
 
@@ -296,28 +284,45 @@ public class ClassUtils {
 	}
 
 	/**
-	 * 获取所有属性
+	 * 获取全部属性
 	 *
-	 * @param classOfType
+	 * @param clazz 类型
 	 * @return
 	 */
-	public static Field[] getAllFields(Class<?> classOfType) {
-		Field[] fields = classOfType.getDeclaredFields();
-		Class<?> superClass = classOfType.getSuperclass();
-		if (superClass != Object.class) {
-			List<Field> list = new ArrayList<>();
-			for (Field field : fields) {
-				if (!field.getName().equals("serialVersionUID")) {
-					list.add(field);
-				}
-			}
-			Field[] list2 = getAllFields(superClass);
-			for (Field field : list2) {
-				list.add(field);
-			}
-			fields = list.toArray(new Field[list.size()]);
+	public static Field[] getAllFields(Class<?> clazz) {
+		List<Field> fieldList = new ArrayList<>();
+		while (clazz != Object.class) {
+			fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
+			clazz = clazz.getSuperclass();
 		}
+		Field[] fields = new Field[fieldList.size()];
+		fieldList.toArray(fields);
 		return fields;
+	}
+
+	/**
+	 * 获取属性
+	 *
+	 * @param clazz     类型
+	 * @param fieldName 属性名
+	 * @return
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
+	 */
+	public static Field getField(Class<?> clazz, String fieldName) {
+		Field field = null;
+		while (clazz != Object.class) {
+			try {
+				field = clazz.getDeclaredField(fieldName);
+			} catch (NoSuchFieldException | SecurityException e) {
+			}
+			if (field == null) {
+				clazz = clazz.getSuperclass();
+			} else {
+				return field;
+			}
+		}
+		return null;
 	}
 
 	/**

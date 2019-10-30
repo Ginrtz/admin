@@ -2,34 +2,23 @@ package com.gin.admin.model;
 
 import java.io.Serializable;
 
-import com.gin.nicedao.annotation.Column;
-import com.gin.nicedao.annotation.Id;
-import com.gin.nicedao.annotation.Table;
+import com.gin.admin.model.base.Tree;
 
-@Table
 public class Menu extends Tree<Menu> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@Column
-	private Integer id;
-	@Column
+	private Long id;
 	private String path;
-	@Column
 	private String component;
-	@Column
 	private String name;
-	@Column
 	private String title;
-	@Column
 	private String icon;
-	@Column
 	private Integer breadcrumb;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

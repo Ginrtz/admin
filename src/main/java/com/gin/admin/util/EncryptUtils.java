@@ -1,6 +1,5 @@
 package com.gin.admin.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -17,14 +16,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 public class EncryptUtils {
 	public static final String AES_ECB_PKCS5 = "AES/ECB/PKCS5Padding";
 	public static final String AES_ECB_PKCS7 = "AES/ECB/PKCS7Padding";
-	/**
-	 * RSA最大解密密文大小
-	 */
-	private static final int MAX_DECRYPT_BLOCK = 256;
-	/**
-	 * RSA最大加密明文大小
-	 */
-	private static final int MAX_ENCRYPT_BLOCK = 245;
 
 	/**
 	 * 使用MessageDigest加密
@@ -265,99 +256,6 @@ public class EncryptUtils {
 		byte[] data = StringUtils.hex2byte(source);
 		byte[] bytes = cipher(data, Cipher.DECRYPT_MODE, transformation, key);
 		return new String(bytes, "utf-8");
-	}
-
-	private static Cipher getCipher(String providerName, String transformation) throws Exception {
-		if (StringUtils.isEmpty(transformation)) {
-			transformation = "RSA/ECB/PKCS1Padding";
-		}
-		if (!StringUtils.isEmpty(providerName) && !"SunJCE".equalsIgnoreCase(providerName)) {
-			if (Security.getProvider(providerName) == null) {
-				if (BouncyCastleProvider.PROVIDER_NAME.equalsIgnoreCase(providerName)) {
-					Security.addProvider(new BouncyCastleProvider());
-				} else if ("AndroidOpenSSL".equalsIgnoreCase(providerName)) {
-					providerName = null;
-				} else {
-					throw new IllegalArgumentException("provinderName : " + providerName + " 不存在");
-				}
-			}
-		}
-		Cipher cipher;
-		if (!StringUtils.isEmpty(providerName)) {
-			cipher = Cipher.getInstance(transformation, providerName);
-		} else {
-			cipher = Cipher.getInstance(transformation);
-		}
-		return cipher;
-	}
-
-	/**
-	 * RSA公钥加密
-	 *
-	 * @param source         名文
-	 * @param providerName   加密引擎[SunJCE,BC,AndroidOpenSSL],默认为SunJCE
-	 * @param transformation 加密方式[RSA/ECB/PKCS1Padding],默认RSA/ECB/PKCS1Padding
-	 * @param publicKey
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] rsaPublicKeyEncode(byte[] source, String providerName, String transformation, Key publicKey)
-			throws Exception {
-		Cipher cipher = getCipher(providerName, transformation);
-		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-		int inputLength = source.length;
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		int offSet = 0;
-		byte[] cache;
-		int i = 0;
-		// 对数据分段加密
-		while (inputLength - offSet > 0) {
-			if (inputLength - offSet > MAX_ENCRYPT_BLOCK) {
-				cache = cipher.doFinal(source, offSet, MAX_ENCRYPT_BLOCK);
-			} else {
-				cache = cipher.doFinal(source, offSet, inputLength - offSet);
-			}
-			out.write(cache, 0, cache.length);
-			i++;
-			offSet = i * MAX_ENCRYPT_BLOCK;
-		}
-		byte[] encodeData = out.toByteArray();
-		out.close();
-		return encodeData;
-	}
-
-	/**
-	 * RSA私钥解密
-	 *
-	 * @param source         密文
-	 * @param providerName   解密引擎[SunJCE,BC,AndroidOpenSSL],默认为SunJCE
-	 * @param transformation 加密方式[RSA/ECB/PKCS1Padding],默认RSA/ECB/PKCS1Padding
-	 * @param privateKey     私钥
-	 * @return
-	 * @throws Exception
-	 */
-	public byte[] rsaPrivateKeyDecode(byte[] source, String providerName, String transformation, Key privateKey)
-			throws Exception {
-		Cipher cipher = getCipher(providerName, transformation);
-		cipher.init(Cipher.DECRYPT_MODE, privateKey);
-		int inputLength = source.length;
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		int offSet = 0;
-		byte[] cache;
-		int i = 0;
-		while (inputLength - offSet > 0) {
-			if (inputLength - offSet > MAX_DECRYPT_BLOCK) {
-				cache = cipher.doFinal(source, offSet, MAX_DECRYPT_BLOCK);
-			} else {
-				cache = cipher.doFinal(source, offSet, inputLength - offSet);
-			}
-			out.write(cache, 0, cache.length);
-			i++;
-			offSet = i * MAX_DECRYPT_BLOCK;
-		}
-		byte[] decryptedData = out.toByteArray();
-		out.close();
-		return decryptedData;
 	}
 
 	/**

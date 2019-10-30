@@ -99,7 +99,9 @@ public class HttpUtil {
 			}
 			// 为httpPost设置封装好的请求参数
 			try {
-				httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+				UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(nvps, "UTF-8");
+				formEntity.setContentType("application/x-www-form-urlencoded");
+				httpPost.setEntity(formEntity);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

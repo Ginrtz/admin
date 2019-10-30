@@ -2,42 +2,29 @@ package com.gin.admin.model;
 
 import java.io.Serializable;
 
-import com.gin.nicedao.annotation.Column;
-import com.gin.nicedao.annotation.Id;
-import com.gin.nicedao.annotation.Table;
-
 /**
  * 用户
  *
  * @author gin
  * @date 2019-07-03
  */
-@Table
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@Column
-	private Integer id;
-	@Column
+	private Long id;
 	private String userName;
-	@Column
 	private String password;
-	@Column
 	private String nickName;
-	@Column
 	private String qqNo;
-	@Column
 	private String wxNo;
-	@Column
 	private String mobile;
-	@Column
 	private String email;
+	private String avatar;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -97,9 +84,17 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", nickName=" + nickName
-				+ ", qqNo=" + qqNo + ", wxNo=" + wxNo + ", mobile=" + mobile + ", email=" + email + "]";
+				+ ", qqNo=" + qqNo + ", wxNo=" + wxNo + ", mobile=" + mobile + ", email=" + email+ ", avatar=" + avatar + "]";
 	}
 }
