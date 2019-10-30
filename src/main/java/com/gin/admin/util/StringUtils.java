@@ -900,8 +900,7 @@ public class StringUtils {
 			if (b) {
 				string = string.substring(remove.length());
 			}
-			boolean e = string.length() >= remove.length()
-					&& string.lastIndexOf(remove) == string.length() - remove.length();
+			boolean e = string.length() >= remove.length() && string.lastIndexOf(remove) == string.length() - remove.length();
 			if (e) {
 				string = string.substring(0, string.length() - remove.length());
 			}
@@ -1160,7 +1159,7 @@ public class StringUtils {
 	}
 
 	/**
-	 * 将字符串转换为java格式的,string_name -> stringName
+	 * 将字符串转换为java小驼峰格式的,string_name -> stringName
 	 *
 	 * @param sqlName
 	 * @return

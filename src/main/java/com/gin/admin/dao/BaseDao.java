@@ -70,9 +70,9 @@ public class BaseDao {
 				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
-				return jdbcTemplate.query(sql, parameters, new ResultRowMapper<T>(clazz));
+				return jdbcTemplate.query(sql, parameters, new ResultRowMapper<>(clazz));
 			} else {
-				return jdbcTemplate.query(sql, new ResultRowMapper<T>(clazz));
+				return jdbcTemplate.query(sql, new ResultRowMapper<>(clazz));
 			}
 		} catch (Exception e) {
 			return null;
@@ -93,9 +93,6 @@ public class BaseDao {
 			int columnCount = metaData.getColumnCount();
 			for (int i = 1; i <= columnCount; i++) {
 				String columnName = metaData.getColumnName(i);
-				String columnTypeName = metaData.getColumnTypeName(i);
-				String columnClassName = metaData.getColumnClassName(i);
-				System.out.println(columnName + " : " + columnTypeName + " : " + columnClassName);
 				ClassUtils.setFieldValue(clazz, StringUtils.toJavaName(columnName), obj, rs.getObject(i));
 			}
 			return obj;
@@ -176,8 +173,7 @@ public class BaseDao {
 	/**
 	 * 执行sql
 	 *
-	 * @param sql  sql语句，占位符为冒号+参数名格式（update user set first_name = :firstName where
-	 *             id = 1）
+	 * @param sql  sql语句，占位符为冒号+参数名格式（update user set first_name = :firstName where id = 1）
 	 * @param bean 参数对象,对象属性名要和sql占位符相同，如果参数为Map，Map的key要和sql占位符相同
 	 */
 	public int executeWithBean(final String sql, Object bean) {
@@ -370,7 +366,7 @@ public class BaseDao {
 			logger.debug("[BaseDao]\tsql：" + sql);
 			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 		}
-		return jdbcTemplate.query(sql, new ResultRowMapper<T>(clazz), parameters);
+		return jdbcTemplate.query(sql, new ResultRowMapper<>(clazz), parameters);
 	}
 
 	public Map<String, Object> findOneForJdbc(String sql, Object... parameters) {
@@ -419,8 +415,7 @@ public class BaseDao {
 			if (DATABSE_TYPE_ORACLE.equals(dbType)) {
 				sql = MessageFormat.format(ORACLE_SQL, sql, endIndex, beginIndex);
 			} else if (DATABSE_TYPE_SQLSERVER.equals(dbType)) {
-				sql = MessageFormat.format(SQLSERVER_SQL, sql.substring(getAfterSelectInsertPoint(sql)), endIndex,
-						beginIndex);
+				sql = MessageFormat.format(SQLSERVER_SQL, sql.substring(getAfterSelectInsertPoint(sql)), endIndex, beginIndex);
 			}
 		}
 		return sql;
