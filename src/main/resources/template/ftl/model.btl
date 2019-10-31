@@ -1,0 +1,43 @@
+package ${info.packageName};
+
+import java.io.Serializable;
+
+/**
+ * ${info.remark}
+ *
+ * @author gin ${date(),dateFormat='yyyy-MM-dd'}
+ */
+public class ${info.className} implements Serializable {
+	private static final long serialVersionUID = 1L;
+<%
+	for(var i=0;i<info.fieldNames.~size;i++){
+%>
+	private ${info.fieldClasses[i]} ${info.fieldNames[i]}; // ${info.remarks[i]}
+<% 	
+	}
+%>
+	
+<%
+	for(var i=0;i<info.fieldNames.~size;i++){
+%>
+	/**
+	 * 获取${info.remarks[i]}
+	 *
+	 * @return ${info.remarks[i]}
+	 */
+	public ${info.fieldClasses[i]} get${info.capitalizedNames[i]}(){
+		return this.${info.fieldNames[i]};
+	}
+	
+	/**
+	 * 设置${info.remarks[i]}
+	 *
+	 * @param ${info.fieldNames[i]} ${info.remarks[i]}
+	 */
+	public void set${info.capitalizedNames[i]}(${info.fieldClasses[i]} ${info.fieldNames[i]}){
+		this.${info.fieldNames[i]} = ${info.fieldNames[i]};
+	}
+<% 	
+	}
+%>
+}
