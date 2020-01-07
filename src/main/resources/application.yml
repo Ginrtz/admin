@@ -1,59 +1,52 @@
 ## server
 server:
-  port: 9090 #端口号
+   port: 9527 #端口号
 error:
-  debug: true
+   debug: true
 spring:
-  profiles:
+   profiles:
       active: default
-## datasource
-  datasource:
-    db-type: mysql #数据库类型mysql、oracle、sqlserver
-    name: dataSource #数据源名称
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
-    username: root
-    password: 1234
-#druid相关配置
-    druid:
-#监控统计拦截的filters
-      filters: stat
-#配置初始化大小/最小/最大
-      initial-size: 1
-      min-idle: 1
-      max-active: 20
-#获取连接等待超时时间
-      max-wait: 60000
-#间隔多久进行一次检测，检测需要关闭的空闲连接
-      time-between-eviction-runs-millis: 60000
-#一个连接在池中最小生存的时间
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 'x'
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-#打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
-      pool-prepared-statements: false
-      max-pool-prepared-statement-per-connection-size: 20
-## redis
-  redis:
-    database: 0
-    host: localhost
-    port: 6379
-    password: 1234
-    timeout: 1000
-    jedis:
-      pool:
-        max-idle: 3
-        max-wait: -1
-        min-idle: 0
-        max-active: 20
-##log4j2
+   mvc:
+      view:
+         prefix: /pages/
+         suffix: .jsp
+   datasource:
+      db-type: mysql #数据库类型mysql、oracle、sqlserver
+      name: dataSource #数据源名称
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
+      username: root
+      password: 1234
+      druid:
+         filters: stat
+         initial-size: 1
+         min-idle: 1
+         max-active: 20
+         max-wait: 60000
+         time-between-eviction-runs-millis: 60000
+         min-evictable-idle-time-millis: 300000
+         validation-query: SELECT 'x'
+         test-while-idle: true
+         test-on-borrow: false
+         test-on-return: false
+         pool-prepared-statements: false #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+         max-pool-prepared-statement-per-connection-size: 20
+   redis:
+      database: 0
+      host: localhost
+      port: 6379
+      password: 1234
+      timeout: 1000
+      jedis:
+         pool:
+            max-idle: 3
+            max-wait: -1
+            min-idle: 0
+            max-active: 20
 logging:
-  config: classpath:log4j2.xml
-## 登录设置
+   config: classpath:log4j2.xml
 auth:
-  excludeUrls:
-  - /user/login
-  - /user/getkey
-  - /error
+   excludeUrls:
+   - /user/login
+   - /user/getkey
+   - /error

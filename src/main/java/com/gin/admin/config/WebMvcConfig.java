@@ -1,4 +1,4 @@
-package com.gin.admin.autoconfig;
+package com.gin.admin.config;
 
 import java.util.List;
 

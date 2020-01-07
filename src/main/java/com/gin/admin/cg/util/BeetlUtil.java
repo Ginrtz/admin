@@ -22,7 +22,7 @@ public class BeetlUtil {
 	 * @author o1760 2019年10月31日
 	 */
 	public static Template getTemplate(String templateName) throws IOException {
-		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("template/ftl/");
+		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("template/cg/");
 		Configuration cfg = Configuration.defaultConfiguration();
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		return gt.getTemplate(templateName);

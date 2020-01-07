@@ -12,15 +12,15 @@ import java.util.Map;
  */
 public class ResResult {
 	/** 操作成功 */
-	public static final int CODE_SUCCESS = 200;
+	public static final int CODE_SUCCESS = 0;
 	/** 用户名或密码错误 */
-	public static final int CODE_VERIFY_ERROR = 40001;
+	public static final int CODE_VERIFY_ERROR = 1;
 	/** token无效 */
-	public static final int CODE_TOKEN_INVALID = 40003;
+	public static final int CODE_TOKEN_INVALID = 2;
 	/** 用户在其他客户端登录 */
-	public static final int CODE_TOKEN_KICKED_OUT = 40008;
+	public static final int CODE_TOKEN_KICKED_OUT = 3;
 	/** 参数异常 */
-	public static final int CODE_PARAMETER_ERROR = 50001;
+	public static final int CODE_PARAMETER_ERROR = 4;
 
 	private int code = CODE_SUCCESS;
 	private String message = "操作成功";

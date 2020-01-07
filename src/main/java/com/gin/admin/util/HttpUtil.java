@@ -22,6 +22,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * 发起HTTP请求工具类
+ * 
+ * @author o1760
+ *
+ */
 public class HttpUtil {
 	public static String doGet(String url) {
 		CloseableHttpClient httpClient = null;
