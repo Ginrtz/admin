@@ -132,6 +132,9 @@
 	</div>
 	<script>
 		var pub_key = '${SERVER_PUB_KEY}';
+		var encryptor = new JSEncrypt();
+		encryptor.setPublicKey(pub_key);
+		var password_enc = encryptor.encrypt('123456');
 	</script>
 	<script src="/static/js/jquery.min.js"></script>
 	<script src="/static/js/jquery-ui.custom.js"></script>
