@@ -10,22 +10,18 @@ import java.util.Map;
  *
  * @author o1760
  */
-public class ResResult {
+public class JsonResult {
 	/** 操作成功 */
 	public static final int CODE_SUCCESS = 0;
 	/** 用户名或密码错误 */
 	public static final int CODE_VERIFY_ERROR = 1;
 	/** token无效 */
 	public static final int CODE_TOKEN_INVALID = 2;
-	/** 用户在其他客户端登录 */
-	public static final int CODE_TOKEN_KICKED_OUT = 3;
-	/** 参数异常 */
-	public static final int CODE_PARAMETER_ERROR = 4;
 
 	private int code = CODE_SUCCESS;
 	private String message = "操作成功";
-	private Map<String, Object> data = new HashMap<>();
-	public static ResResult success = new ResResult();
+	private Map<String, Object> data;
+	public static JsonResult success = new JsonResult();
 
 	public int getCode() {
 		return code;
@@ -44,14 +40,23 @@ public class ResResult {
 	}
 
 	public void put(String key, Object value) {
+		if (data == null) {
+			data = new HashMap<>();
+		}
 		data.put(key, value);
 	}
 
 	public void remove(String key) {
+		if (data == null) {
+			return;
+		}
 		data.remove(key);
 	}
 
 	public Object get(String key) {
+		if (data == null) {
+			return null;
+		}
 		return data.get(key);
 	}
 
@@ -78,6 +83,7 @@ public class ResResult {
 				data.put(field.getName(), field.get(entity));
 			} catch (Exception e) {
 			}
+			field.setAccessible(false);
 		}
 	}
 }

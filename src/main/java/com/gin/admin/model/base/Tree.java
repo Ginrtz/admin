@@ -2,11 +2,13 @@ package com.gin.admin.model.base;
 
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Tree<T> {
 	protected Long parentId;
 	@JsonIgnore
+	@JSONField(serialize = false)
 	protected T parent;
 	protected Integer treeSort;
 	protected List<T> children;

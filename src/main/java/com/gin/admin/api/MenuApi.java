@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gin.admin.dao.BaseDao;
 import com.gin.admin.model.Menu;
-import com.gin.admin.model.base.ResResult;
+import com.gin.admin.model.base.JsonResult;
 import com.gin.admin.util.TreeBeanUtil;
 
 @RestController
@@ -20,12 +20,12 @@ public class MenuApi {
 	private BaseDao dao;
 
 	@RequestMapping("/list")
-	public ResResult list() {
+	public JsonResult list() {
 		List<Menu> menuList = dao.findList(Menu.class, "select * from menu");
 		List<Menu> treeMenu = TreeBeanUtil.listToTreeList(menuList, null);
 		Map<String, Object> data = new HashMap<>();
 		data.put("items", treeMenu);
-		ResResult result = new ResResult();
+		JsonResult result = new JsonResult();
 		result.setData(data);
 		return result;
 	}

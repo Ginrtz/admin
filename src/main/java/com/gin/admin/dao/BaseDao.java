@@ -427,4 +427,25 @@ public class BaseDao {
 		return selectIndex + (selectDistinctIndex == selectIndex ? 15 : 6);
 	}
 
+	/**
+	 * 去除sql的order by
+	 * @param sql
+	 * @return
+	 */
+	private static String removeOrders(String sql) {
+		//零宽断言
+		Pattern p = Pattern.compile("order\\s+by[\\w|\\W|\\s|\\S]+(?=\\))",Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(sql);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, "");
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
+
+	public static void main(String[] args) {
+		String sql = "select * from (select * from a where id=1 order by time) order by id";
+		System.out.println(removeOrders(sql));
+	}
 }
