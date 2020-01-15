@@ -27,12 +27,18 @@ public class LoginController {
 		return "login/login";
 	}
 
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index() {
+		return "main/index";
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult login(User user) {
+	public JsonResult login(HttpServletRequest request, User user) {
 		JsonResult result = new JsonResult();
 		if (StringUtils.isEmpty(user.getUserName()) || StringUtils.isEmpty(user.getPassword())) {
 			result.setCode(JsonResult.CODE_VERIFY_ERROR);
+			result.setMessage("用户名或密码错误");
 			return result;
 		}
 		try {
@@ -40,21 +46,24 @@ public class LoginController {
 			user.setPassword(new String(RSAUtils.decryptByPrivateKey(user.getPassword(), jwtUtil.getPrivateKey())));
 		} catch (Exception e) {
 			result.setCode(JsonResult.CODE_VERIFY_ERROR);
+			result.setMessage("用户名或密码错误");
 			return result;
 		}
 		User u = dao.find(User.class, "select * from user where user_name=? and password=?", user.getUserName(), user.getPassword());
 		if (u == null) {
 			result.setCode(JsonResult.CODE_VERIFY_ERROR);
+			result.setMessage("用户名或密码错误");
 			return result;
 		}
-		String token = jwtUtil.getToken(u);
+		String token = jwtUtil.getToken(u, request.getSession().getId());
 		result.put("token", token);
+		result.put("user", u);
 		return result;
 	}
 
 	@RequestMapping("/logout")
 	public JsonResult logout(HttpServletRequest request) {
-		jwtUtil.removeToken(jwtUtil.getCurrToken(request));
+		jwtUtil.removeToken(request);
 		return JsonResult.success;
 	}
 }

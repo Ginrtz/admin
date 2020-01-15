@@ -42,11 +42,8 @@ public class JwtUtil {
 
 	/**
 	 * 根据用户生成token，并放入缓存
-	 *
-	 * @param user 登录用户
-	 * @return token
 	 */
-	public String getToken(User user) {
+	public String getToken(User user, String sessionId) {
 		String token = Jwts.builder().setSubject(user.getUserName()) // 主题
 				.setIssuedAt(new Date()) // 签发时间
 				.signWith(SignatureAlgorithm.HS256, base64EncodedSecretKey) // 签名算法及秘钥
@@ -54,17 +51,22 @@ public class JwtUtil {
 		// token放到缓存并设置过期时间
 		redisTemplate.opsForValue().set(user.getUserName(), token, TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 		redisTemplate.opsForValue().set(token, JSON.toJSONString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
+		if (StringUtils.isNotEmpty(sessionId)) {
+			redisTemplate.opsForValue().set(sessionId, JSON.toJSONString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
+		}
 		return token;
 	}
 
 	/**
 	 * 获取当前用户
-	 *
-	 * @param token
-	 * @return 用户
 	 */
 	public User getCurrUser(HttpServletRequest request) {
-		String user_json = (String) redisTemplate.boundValueOps(getCurrToken(request)).get();
+		String user_json;
+		if (RequestUtil.isAjax(request)) {
+			user_json = (String) redisTemplate.boundValueOps(getCurrToken(request)).get();
+		} else {
+			user_json = (String) redisTemplate.boundValueOps(request.getSession().getId()).get();
+		}
 		if (StringUtils.isNotEmpty(user_json)) {
 			return JSON.parseObject(user_json, User.class);
 		}
@@ -73,9 +75,6 @@ public class JwtUtil {
 
 	/**
 	 * 获取当前token
-	 *
-	 * @param token
-	 * @return
 	 */
 	public String getCurrToken(HttpServletRequest request) {
 		return request.getHeader(TOKEN_KEY);
@@ -83,12 +82,8 @@ public class JwtUtil {
 
 	/**
 	 * 验证token
-	 *
-	 * @param token
-	 * @return
-	 * @throws Exception
 	 */
-	public JsonResult checkToken(String token) {
+	public JsonResult checkToken(String token, String sessionId) {
 		JsonResult result = new JsonResult();
 		try {
 			// 解析token，获取绑定的用户名
@@ -111,6 +106,7 @@ public class JwtUtil {
 			result.put("username", username);
 			redisTemplate.boundValueOps(username).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 			redisTemplate.boundValueOps(token).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
+			redisTemplate.boundValueOps(sessionId).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 		} catch (Exception e) {
 			// token校验失败，可能是伪造的token
 			result.setCode(JsonResult.CODE_TOKEN_INVALID);
@@ -126,29 +122,33 @@ public class JwtUtil {
 	 * @param username
 	 * @return
 	 */
-	public JsonResult removeToken(String token) {
+	public JsonResult removeToken(HttpServletRequest request) {
+		String token = getCurrToken(request);
 		final Claims claims = Jwts.parser().setSigningKey(base64EncodedSecretKey).parseClaimsJws(token).getBody();
 		final String username = claims.getSubject();
 		JsonResult result = new JsonResult();
 		redisTemplate.delete(username);
 		redisTemplate.delete(token);
+		redisTemplate.delete(request.getSession().getId());
 		return result;
 	}
 
 	/**
 	 * 获取服务器加密私钥
-	 *  @author o1760 2020年1月14日
+	 *
+	 * @author o1760 2020年1月14日
 	 */
 	public String getPrivateKey() {
 		return privateKey;
 	}
+
 	/**
 	 * 获取服务器加密公钥
-	 *  @author o1760 2020年1月14日
+	 *
+	 * @author o1760 2020年1月14日
 	 */
 	public String getPublicKey() {
 		return publicKey;
 	}
-
 
 }

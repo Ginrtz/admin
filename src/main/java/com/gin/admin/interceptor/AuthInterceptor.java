@@ -28,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
 		String token = request.getHeader(JwtUtil.TOKEN_KEY);
 		// 验证token
-		JsonResult result = jwtUtil.checkToken(token);
+		JsonResult result = jwtUtil.checkToken(token, request.getSession().getId());
 		if (result.getCode() != JsonResult.CODE_SUCCESS) {
 			if (RequestUtil.isAjax(request)) {
 				response.setCharacterEncoding("UTF-8");

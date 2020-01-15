@@ -225,13 +225,13 @@ fieldset[disabled] .btn-inverse.active {
 .btn-social .btn:hover {
   color: #fff;
 }
-.btn-social .btn.btn-facebook:hover {
+.btn-social .btn.btn-qq:hover {
   background-color: #428bca;
 }
-.btn-social .btn.btn-twitter:hover {
+.btn-social .btn.btn-weixin:hover {
   background-color: #5bc0de;
 }
-.btn-social .btn.btn-google-plus:hover {
+.btn-social .btn.btn-weibo:hover {
   background-color: #d9534f;
 }
 .btn-social .btn i {
