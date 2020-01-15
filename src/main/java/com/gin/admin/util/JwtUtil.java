@@ -51,9 +51,7 @@ public class JwtUtil {
 		// token放到缓存并设置过期时间
 		redisTemplate.opsForValue().set(user.getUserName(), token, TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 		redisTemplate.opsForValue().set(token, JSON.toJSONString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
-		if (StringUtils.isNotEmpty(sessionId)) {
-			redisTemplate.opsForValue().set(sessionId, JSON.toJSONString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
-		}
+		redisTemplate.opsForValue().set(sessionId, token, TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 		return token;
 	}
 
@@ -83,9 +81,14 @@ public class JwtUtil {
 	/**
 	 * 验证token
 	 */
-	public JsonResult checkToken(String token, String sessionId) {
+	public JsonResult checkToken(HttpServletRequest request) {
 		JsonResult result = new JsonResult();
 		try {
+			String token = request.getHeader(JwtUtil.TOKEN_KEY);
+			String sessionId = request.getSession().getId();
+			if (StringUtils.isEmpty(token)) {
+				token = (String) redisTemplate.boundValueOps(sessionId).get();
+			}
 			// 解析token，获取绑定的用户名
 			final Claims claims = Jwts.parser().setSigningKey(base64EncodedSecretKey).parseClaimsJws(token).getBody();
 			final String username = claims.getSubject();
@@ -103,7 +106,6 @@ public class JwtUtil {
 				result.setMessage("用户在其他地点登录");
 				return result;
 			}
-			result.put("username", username);
 			redisTemplate.boundValueOps(username).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 			redisTemplate.boundValueOps(token).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
 			redisTemplate.boundValueOps(sessionId).expire(TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
