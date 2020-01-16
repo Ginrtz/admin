@@ -1,6 +1,8 @@
 ## server
 server:
    port: 9527 #端口号
+   servlet:
+      context-path: /admin
 spring:
    mvc:
       view:

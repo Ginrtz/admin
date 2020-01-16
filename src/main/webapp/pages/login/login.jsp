@@ -1,33 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-%>
-<c:set var="webRoot" value="<%=basePath%>" />
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <title>Unicorn Admin</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/static/css/font-awesome.css" />
-<link rel="stylesheet" href="/static/css/unicorn-login.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/font-awesome.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/unicorn-login.css" />
 <!--[if lt IE 9]>
-<script type="text/javascript" src="/static/js/respond.min.js"></script>
+<script type="text/javascript" src="${ctxStatic }/js/respond.min.js"></script>
 <![endif]-->
-<script type="text/javascript" src="/static/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="${ctxStatic }/js/es6-promise.auto.min.js"></script>
 </head>
 <body>
 	<div id="container">
 		<div id="logo">
-			<img src="/static/img/logo.png" alt="" />
+			<img src="${ctxStatic }/img/logo.png" alt="" />
 		</div>
 		<div id="user">
 			<div class="avatar">
 				<div class="inner"></div>
-				<img src="/static/img/demo/av1_1.jpg" />
+				<img src="${ctxStatic }/img/demo/av1_1.jpg" />
 			</div>
 			<div class="text">
 				<h4>
@@ -131,17 +126,18 @@
 			</form>
 		</div>
 	</div>
-	<script src="/static/js/jquery.min.js"></script>
-	<script src="/static/js/layer/layer.js"></script>
-	<script src="/static/js/jsencrypt.min.js"></script>
-	<script src="/static/js/es6-promise.auto.min.js"></script>
-	<script src="/static/js/qs.js"></script>
-	<script src="/static/js/axios.min.js"></script>
-	<script src="/static/js/request.js"></script>
+	<script src="${ctxStatic }/js/jquery.min.js"></script>
+	<script src="${ctxStatic }/js/layer/layer.js"></script>
+	<script src="${ctxStatic }/js/jsencrypt.min.js"></script>
+	<script src="${ctxStatic }/js/es6-promise.auto.min.js"></script>
+	<script src="${ctxStatic }/js/qs.js"></script>
+	<script src="${ctxStatic }/js/axios.min.js"></script>
+	<script src="${ctxStatic }/js/request.js"></script>
 	<script>
-		var pub_key = '${SERVER_PUB_KEY}';
+		const pub_key = '${SERVER_PUB_KEY}';
+		const ctx = '${ctx}';
 	</script>
-	<script src="/static/js/jquery-ui.custom.js"></script>
-	<script src="/static/js/login/unicorn.login.js"></script>
+	<script src="${ctxStatic }/js/jquery-ui.custom.js"></script>
+	<script src="${ctxStatic }/js/login/unicorn.login.js"></script>
 </body>
 </html>

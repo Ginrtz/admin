@@ -2,37 +2,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-%>
-<c:set var="webRoot" value="<%=basePath%>" />
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <title>Unicorn Admin</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="/static/css/colorpicker.css" />
-<link rel="stylesheet" href="/static/css/datepicker.css" />
-<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/static/css/font-awesome.css" />
-<link rel="stylesheet" href="/static/css/fullcalendar.css" />
-<link rel="stylesheet" href="/static/css/jquery-ui.css" />
-<link rel="stylesheet" href="/static/css/jquery.gritter.css" />
-<link rel="stylesheet" href="/static/css/jquery.jscrollpane.css" />
-<link rel="stylesheet" href="/static/css/select2.css" />
-<link rel="stylesheet" href="/static/css/unicorn.css" />
-<link rel="stylesheet" href="/static/css/icheck/flat/blue.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/colorpicker.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/datepicker.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/font-awesome.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/fullcalendar.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/jquery-ui.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/jquery.gritter.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/jquery.jscrollpane.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/select2.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/unicorn.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/icheck/flat/blue.css" />
 <!--[if lt IE 9]>
-<script type="text/javascript" src="/static/js/respond.min.js"></script>
+<script type="text/javascript" src="${ctxStatic }/js/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-color="grey" class="flat">
 	<div id="wrapper">
 		<div id="header">
 			<h1>
-				<a href="./index.html">Unicorn Admin</a>
+				<a href="${ctx }/index">Unicorn Admin</a>
 			</h1>
 			<a id="menu-trigger" href="#">
 				<i class="fa fa-bars"></i>

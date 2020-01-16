@@ -69,7 +69,7 @@ $(document).ready(function() {
 			var encryptor = new JSEncrypt();
 			encryptor.setPublicKey(pub_key);
 			var password = encryptor.encrypt($.trim(passinput.val()));
-			post('/login', {
+			post(ctx+'/login', {
 					userName : $.trim(userinput.val()),
 					password : password
 				}).then(res=>{
@@ -87,7 +87,7 @@ $(document).ready(function() {
 								'opacity' : '1'
 							}, 250, function() {
 								setTimeout(function() {
-									location.href='/index';
+									location.href=ctx+'/index';
 								}, 600);
 							});
 						});

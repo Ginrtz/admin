@@ -37,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 				writer.flush();
 				writer.close();
 			} else {
-				response.sendRedirect("/login");
+				response.sendRedirect(request.getContextPath() + "/login");
 			}
 			return false;
 		}
