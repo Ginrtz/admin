@@ -236,9 +236,9 @@
 			<div id="footer" class="col-xs-12">这里是页脚</div>
 		</div>
 	</div>
-	<script src="${ctxStatic }/js/jquery.min.js"></script>
-	<script src="${ctxStatic }/js/bootstrap.min.js"></script>
-	<script src="${ctxStatic }/js/jquery.nicescroll.min.js"></script>
-	<script src="${ctxStatic }/js/unicorn.js"></script>
+	<script src="${ctxStatic }/js/common/jquery.min.js"></script>
+	<script src="${ctxStatic }/js/common/bootstrap.min.js"></script>
+	<script src="${ctxStatic }/js/common/jquery.nicescroll.min.js"></script>
+	<script src="${ctxStatic }/js/index/unicorn.js"></script>
 </body>
 </html>

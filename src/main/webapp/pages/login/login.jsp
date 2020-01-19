@@ -126,18 +126,18 @@
 			</form>
 		</div>
 	</div>
-	<script src="${ctxStatic }/js/jquery.min.js"></script>
-	<script src="${ctxStatic }/js/layer/layer.js"></script>
-	<script src="${ctxStatic }/js/jsencrypt.min.js"></script>
-	<script src="${ctxStatic }/js/es6-promise.auto.min.js"></script>
-	<script src="${ctxStatic }/js/qs.js"></script>
-	<script src="${ctxStatic }/js/axios.min.js"></script>
-	<script src="${ctxStatic }/js/request.js"></script>
+	<script src="${ctxStatic }/js/common/jquery.min.js"></script>
+	<script src="${ctxStatic }/js/common/jsencrypt.min.js"></script>
+	<script src="${ctxStatic }/js/common/es6-promise.auto.min.js"></script>
+	<script src="${ctxStatic }/js/common/qs.js"></script>
+	<script src="${ctxStatic }/js/common/axios.min.js"></script>
+	<script src="${ctxStatic }/js/common/request.js"></script>
+	<script src="${ctxStatic }/js/common/jquery-ui.custom.js"></script>
 	<script>
 		const pub_key = '${SERVER_PUB_KEY}';
 		const ctx = '${ctx}';
 	</script>
-	<script src="${ctxStatic }/js/jquery-ui.custom.js"></script>
+	<script src="${ctxStatic }/js/layer/layer.js"></script>
 	<script src="${ctxStatic }/js/login/unicorn.login.js"></script>
 </body>
 </html>
