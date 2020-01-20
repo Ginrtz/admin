@@ -218,16 +218,20 @@
 			</ul>
 		</div>
 		<div id="content">
-			<div id="breadcrumb">
-				<a href="#" title="Go to Home" class="tip-bottom">
+			<div id="tabnav">
+				<a href="#" class="current">
 					<i class="fa fa-home"></i>
-					Home
+					首页
 				</a>
-				<a href="#" class="tip-bottom">Dashboard</a><a href="#" class="current">Dashboard</a>
+				<a href="#">
+					Dashboard
+					<i class="fa fa-times-circle"></i>
+				</a>
+				<a href="#">
+					Dashboard
+					<i class="fa fa-times-circle"></i>
+				</a>
 			</div>
-			<!-- <nav>
-				<a href="#">首页</a>
-			</nav> -->
 			<div class="container-fixed">
 				<iframe id="homeIframe" style="height: 100%; width: 100%; border: 0; overflow: auto;" src="/home"> </iframe>
 			</div>

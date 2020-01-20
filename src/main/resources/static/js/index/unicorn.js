@@ -8,10 +8,10 @@ $(function() {
 	// === Resize window related === //
 	$(window).on('resize', function() {
 		wwidth = $(window).width();
-		if($(window).width() >= 992){
-			$(".container-fixed").css('height',($(window).height() - 110)+'px');
-		}else{
-			$(".container-fixed").css('height',($(window).height() - 148)+'px');
+		if ($(window).width() >= 992) {
+			$(".container-fixed").css('height', ($(window).height() - 110) + 'px');
+		} else {
+			$(".container-fixed").css('height', ($(window).height() - 148) + 'px');
 		}
 		if (wwidth >= 768 && wwidth <= 991) {
 			$('#sidebar > ul > li.open ul').attr('style', '').parent().removeClass('open');
@@ -50,10 +50,10 @@ $(function() {
 		}
 
 	});
-	if($(window).width() >= 992){
-		$(".container-fixed").css('height',($(window).height() - 110)+'px');
-	}else{
-		$(".container-fixed").css('height',($(window).height() - 148)+'px');
+	if ($(window).width() >= 992) {
+		$(".container-fixed").css('height', ($(window).height() - 110) + 'px');
+	} else {
+		$(".container-fixed").css('height', ($(window).height() - 148) + 'px');
 	}
 	if ($(window).width() <= 767) {
 		if ($(window).scrollTop() > 35) {
@@ -241,5 +241,10 @@ $(function() {
 		}
 		$(this).parent().find('a').removeClass('active');
 		$(this).addClass('active');
+	});
+
+	$('#tabnav').on('click', 'a', function() {
+		$('#tabnav>a.current').removeClass('current');
+		$(this).addClass('current');
 	});
 });
