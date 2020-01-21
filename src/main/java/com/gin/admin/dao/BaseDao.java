@@ -398,6 +398,7 @@ public class BaseDao {
 	}
 
 	private String createCountSql(String sql) {
+		sql = removeOrders(sql);
 		int index = sql.toLowerCase().indexOf("from");
 		return "select count(*) as ct " + sql.substring(index);
 	}
@@ -433,19 +434,6 @@ public class BaseDao {
 	 * @return
 	 */
 	private static String removeOrders(String sql) {
-		//零宽断言
-		Pattern p = Pattern.compile("order\\s+by[\\w|\\W|\\s|\\S]+(?=\\))",Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(sql);
-		StringBuffer sb = new StringBuffer();
-		while (m.find()) {
-			m.appendReplacement(sb, "");
-		}
-		m.appendTail(sb);
-		return sb.toString();
-	}
-
-	public static void main(String[] args) {
-		String sql = "select * from (select * from a where id=1 order by time) order by id";
-		System.out.println(removeOrders(sql));
+		return sql.replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+(?=\\))", "").replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+", "");
 	}
 }

@@ -8,11 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="${ctxStatic }/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctxStatic }/css/font-awesome.css" />
+<link rel="stylesheet" href="${ctxStatic }/css/common/loading.css" />
 <link rel="stylesheet" href="${ctxStatic }/css/unicorn-login.css" />
 <!--[if lt IE 9]>
 <script type="text/javascript" src="${ctxStatic }/js/respond.min.js"></script>
 <![endif]-->
-<script type="text/javascript" src="${ctxStatic }/js/es6-promise.auto.min.js"></script>
 </head>
 <body>
 	<div id="container">
@@ -133,11 +133,12 @@
 	<script src="${ctxStatic }/js/common/axios.min.js"></script>
 	<script src="${ctxStatic }/js/common/request.js"></script>
 	<script src="${ctxStatic }/js/common/jquery-ui.custom.js"></script>
+	<script src="${ctxStatic }/js/layer/layer.js"></script>
+	<script src="${ctxStatic }/js/common/sysUtil.js"></script>
 	<script>
 		const pub_key = '${SERVER_PUB_KEY}';
 		const ctx = '${ctx}';
 	</script>
-	<script src="${ctxStatic }/js/layer/layer.js"></script>
 	<script src="${ctxStatic }/js/login/unicorn.login.js"></script>
 </body>
 </html>

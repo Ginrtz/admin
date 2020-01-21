@@ -119,16 +119,16 @@
 		</div>
 		<div id="sidebar">
 			<div id="search">
-				<input type="text" placeholder="Search here..." />
-				<button type="submit" class="tip-right" title="Search">
+				<input type="text" placeholder="搜索..." />
+				<button type="submit" class="tip-right" title="搜索">
 					<i class="fa fa-search"></i>
 				</button>
 			</div>
 			<ul>
-				<li class="submenu active">
-					<a href="index.html">
+				<li class="linkmenu active">
+					<a href="/home" tab-id="tab_home">
 						<i class="fa fa-home"></i>
-						<span>Dashboard</span>
+						<span>首页</span>
 					</a>
 				</li>
 				<li class="submenu">
@@ -138,13 +138,13 @@
 						<i class="arrow fa fa-chevron-right"></i>
 					</a>
 					<ul>
-						<li>
+						<li class="linkmenu">
 							<a href="interface.html">Interface Elements</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="jquery-ui.html">jQuery UI</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="buttons.html">Buttons &amp; icons</a>
 						</li>
 					</ul>
@@ -156,24 +156,24 @@
 						<i class="arrow fa fa-chevron-right"></i>
 					</a>
 					<ul>
-						<li>
+						<li class="linkmenu">
 							<a href="form-common.html">Common elements</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="form-validation.html">Validation</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="form-wizard.html">Wizard</a>
 						</li>
 					</ul>
 				</li>
-				<li>
+				<li class="linkmenu">
 					<a href="tables.html">
 						<i class="fa fa-th"></i>
 						<span>Tables</span>
 					</a>
 				</li>
-				<li>
+				<li class="linkmenu">
 					<a href="grid.html">
 						<i class="fa fa-th-list"></i>
 						<span>Grid Layout</span>
@@ -186,30 +186,30 @@
 						<i class="arrow fa fa-chevron-right"></i>
 					</a>
 					<ul>
-						<li>
+						<li class="linkmenu">
 							<a href="invoice.html">Invoice</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="chat.html">Support chat</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="calendar.html">Calendar</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="gallery.html">Gallery</a>
 						</li>
-						<li>
+						<li class="linkmenu">
 							<a href="messages.html">Messages</a>
 						</li>
 					</ul>
 				</li>
-				<li>
+				<li class="linkmenu">
 					<a href="charts.html">
 						<i class="fa fa-signal"></i>
 						<span>Charts &amp; graphs</span>
 					</a>
 				</li>
-				<li>
+				<li class="linkmenu">
 					<a href="widgets.html">
 						<i class="fa fa-inbox"></i>
 						<span>Widgets</span>
@@ -219,17 +219,9 @@
 		</div>
 		<div id="content">
 			<div id="tabnav">
-				<a href="#" class="current">
+				<a href="#" class="current" id="tab_home">
 					<i class="fa fa-home"></i>
 					首页
-				</a>
-				<a href="#">
-					Dashboard
-					<i class="fa fa-times-circle"></i>
-				</a>
-				<a href="#">
-					Dashboard
-					<i class="fa fa-times-circle"></i>
 				</a>
 			</div>
 			<div class="container-fixed">
@@ -243,6 +235,7 @@
 	<script src="${ctxStatic }/js/common/jquery.min.js"></script>
 	<script src="${ctxStatic }/js/common/bootstrap.min.js"></script>
 	<script src="${ctxStatic }/js/common/jquery.nicescroll.min.js"></script>
+	<script src="${ctxStatic }/js/index/tabManager.js"></script>
 	<script src="${ctxStatic }/js/index/unicorn.js"></script>
 </body>
 </html>

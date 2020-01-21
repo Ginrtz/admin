@@ -1,0 +1,51 @@
+@charset "UTF-8";
+.loading-wrap {
+  text-align: center;
+}
+.k-line {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  background-color: #4b9cdb;
+}
+.k-line-1 {
+  animation: k-loadingP 2s infinite;
+}
+.k-line-2 {
+  animation: k-loadingP 2s infinite;
+  animation-delay: 0.15s;
+}
+.k-line-3 {
+  animation: k-loadingP 2s infinite;
+  animation-delay: 0.3s;
+}
+.k-line-4 {
+  animation: k-loadingP 2s infinite;
+  animation-delay: 0.45s;
+}
+.k-line-5 {
+  animation: k-loadingP 2s infinite;
+  animation-delay: 0.6s;
+}
+@keyframes k-loadingP {
+  0% {
+    transform: translateY(0);
+  }
+
+  35% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.8;
+  }
+  70% {
+    transform: translateY(3px);
+    opacity: 0.8;
+  }
+  85% {
+    transform: translateY(-3px);
+  }
+}
