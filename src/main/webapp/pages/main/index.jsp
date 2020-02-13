@@ -87,7 +87,7 @@
 					</a>
 				</li>
 				<li class="btn">
-					<a title="" href="login.html">
+					<a title="" href="${ctx }/login">
 						<i class="fa fa-share"></i>
 						<span class="text">Logout</span>
 					</a>

@@ -1,54 +1,53 @@
 ## server
 server:
-   port: 9527 #端口号
-   servlet:
-      context-path: /
+  port: 9527 #端口号
+  servlet:
+    context-path: /
 spring:
-   mvc:
-      view:
-         prefix: /pages/
-         suffix: .jsp
-   datasource:
-      db-type: mysql #数据库类型mysql、oracle、sqlserver
-      name: dataSource #数据源名称
-      type: com.alibaba.druid.pool.DruidDataSource
-      url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
-      username: root
-      password: 1234
-      druid:
-         filters: stat
-         initial-size: 1
-         min-idle: 1
-         max-active: 20
-         max-wait: 60000
-         time-between-eviction-runs-millis: 60000
-         min-evictable-idle-time-millis: 300000
-         validation-query: SELECT 'x'
-         test-while-idle: true
-         test-on-borrow: false
-         test-on-return: false
-         pool-prepared-statements: false #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
-         max-pool-prepared-statement-per-connection-size: 20
-   redis:
-      database: 0
-      host: localhost
-      port: 6379
-      password: 1234
-      timeout: 1000
-      jedis:
-         pool:
-            max-idle: 3
-            max-wait: -1
-            min-idle: 0
-            max-active: 20
+  mvc:
+    view:
+      prefix: /pages/
+      suffix: .jsp
+  datasource:
+    db-type: mysql #数据库类型mysql、oracle、sqlserver
+    name: dataSource #数据源名称
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://49.233.202.61:6609/admin?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
+    username: root
+    password: Donging!@01
+    druid:
+      filters: stat
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: false #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      max-pool-prepared-statement-per-connection-size: 20
+  redis:
+    cluster:
+      nodes: 49.233.202.61:7001,49.233.202.61:7002,49.233.202.61:7003,49.233.202.61:7004,49.233.202.61:7005,49.233.202.61:7006
+      timeout: 3000
+      max-redirects: 3
+    #password: 123450
+    jedis:
+      pool:
+        max-active: 5
+        max-idle: 10
+        min-idle: 0
 logging:
-   config: classpath:log4j2.xml
+  config: classpath:log4j2.xml
 beetlsql:
-   enabled: false
+  enabled: false
 auth:
-   excludeUrls:
-   - /login
-   - /error/*
-   - /static/**
-   privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCESKrSMaYVQqZ8HDzigNhlsMTivI0xLunvVBRotqeJ2xwLZf3QxIfYQMZputXXebwfgCsipkuTGgvufz2KTNwEVo29sH/oGRweURO82DMNoTmtZPC3WucNXB+yZ9g+UbLz/mkrECLgxLCHpNLq6NyqEsvQQhj/B9GVi6DVn2QJHTgDF6f/V0nW012ib3IKDDm79CsC//Q5DJaAf8UgQr9zpXAH8LYFZkYzdbM/cLKOk9EtXEeRP0y57mzkhl+l4gF+DmVmXsamV/d7bOsTPWtdWWSYNVFoSvD3urKd6Wm+p+RY7Brzu3zKUdrj8HZ2lVpBdHijr+fsl7igsv+W2Mt7AgMBAAECggEAT7P08IanmgG5i+f7q0GUoNi8GB0hOTQaEXBoh5seIQqawCdooaP4cYy9v7Cp7ZVUiupPkyX9PRmhfMa/jpe2rQp1hohU2MRgU8foC418XUb6GIZMHz2vHzaVhonZGdth5m8wcJjdWu5HqsLdrlo1smd20/kvVGIinmcttei+flp1Yf1uf2BSugPam2ADJblcL/Law71DLoSUK++u0xUDl4jgZPI2xUxcYqY5mjVrADFeQYIOpI3gZdCuTUoe2xcLaXr5ygrglT235n52RHyGSdXHeFfYC9DmUMwnincZOFYvLZ8A8o305l9J5vjOLhg1WFhpI7oEuKQUgdZCtQrhwQKBgQDDS+jGST8udkkB2TVdVAq1NBq84MVb2+VUdp3bp7cgXcnBFw8oZBhwUeEM7a/dMCTSWhDCsuMyDmE6WrQFF+rZU6nBYDeNotydweClR9Brln7qwDT+hbAtJ0gmxYg2wLMM2jCVFvcnkC+hczNvt0itN0XC8hop5TPVcfE/93IpmwKBgQCtZrp+Oooeb1nGuwSurKdotaBmW0fIS5KWpZUo2gVCpSbvByqK1soFrmy35hm49/9aTACu3nJ6UxAFIxfvt6jCamsNAWji7ftVVz+FLJi1v/fHHZbdy5b4rgZ+9zdDAlEjlR/GS3RNUMWIdjZJQIThyHbiKsyeheJXGhIT4dRzoQKBgHSWWHwnNgSysJrd5LG2fj32wQ+Iz8kq2Rk3Rr3evcAgvVT8QxxFxSEogEWLj7VoDFNXWTIiQOedFgYUJ+vyf00GWQ0MN53iX/n9x/JjkNTpnxLdc8WOYcJS9QvQWKT3HOzLRL18XEfOF+E2OLq0nDpsCMV8aoogPnVp9C/PtOOJAoGAN9HPDR15Iu0DgHbpvfU0ev+k3+5YgEDbsoUhLCJq+RZDH0U2S7VzGTsaImT/OM0UtZOr0J8pSPl+ObkfVnrP563sQiaHBi5H7yQD/bHqgu+GKuH6k/Ga6vjSfILGllqjlgnGTcYybUUoIZK0TQZpAGnQ42OVtR4yS4nH8gCLrKECgYBGspcRwVHOYInJsmilWfgOYe+9mgY98YSu9ayDMjxxAfo5WTqs0oOeg8uTqYldCZ3J1Y6i5nMz6y2XXkkW9VTnOSfxlMIpgV0TL0kBA1mLXqkb5mJJa5O3mha6jR3EzugbOeWpzaHM180pqSfOKn+GDqVUcu3Z1aiTXB+J9H61uA==
-   publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhEiq0jGmFUKmfBw84oDYZbDE4ryNMS7p71QUaLanidscC2X90MSH2EDGabrV13m8H4ArIqZLkxoL7n89ikzcBFaNvbB/6BkcHlETvNgzDaE5rWTwt1rnDVwfsmfYPlGy8/5pKxAi4MSwh6TS6ujcqhLL0EIY/wfRlYug1Z9kCR04Axen/1dJ1tNdom9yCgw5u/QrAv/0OQyWgH/FIEK/c6VwB/C2BWZGM3WzP3CyjpPRLVxHkT9Mue5s5IZfpeIBfg5lZl7Gplf3e2zrEz1rXVlkmDVRaErw97qynelpvqfkWOwa87t8ylHa4/B2dpVaQXR4o6/n7Je4oLL/ltjLewIDAQAB
+  excludeUrls:
+  - /login
+  - /error/*
+  - /static/**
+  privateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCESKrSMaYVQqZ8HDzigNhlsMTivI0xLunvVBRotqeJ2xwLZf3QxIfYQMZputXXebwfgCsipkuTGgvufz2KTNwEVo29sH/oGRweURO82DMNoTmtZPC3WucNXB+yZ9g+UbLz/mkrECLgxLCHpNLq6NyqEsvQQhj/B9GVi6DVn2QJHTgDF6f/V0nW012ib3IKDDm79CsC//Q5DJaAf8UgQr9zpXAH8LYFZkYzdbM/cLKOk9EtXEeRP0y57mzkhl+l4gF+DmVmXsamV/d7bOsTPWtdWWSYNVFoSvD3urKd6Wm+p+RY7Brzu3zKUdrj8HZ2lVpBdHijr+fsl7igsv+W2Mt7AgMBAAECggEAT7P08IanmgG5i+f7q0GUoNi8GB0hOTQaEXBoh5seIQqawCdooaP4cYy9v7Cp7ZVUiupPkyX9PRmhfMa/jpe2rQp1hohU2MRgU8foC418XUb6GIZMHz2vHzaVhonZGdth5m8wcJjdWu5HqsLdrlo1smd20/kvVGIinmcttei+flp1Yf1uf2BSugPam2ADJblcL/Law71DLoSUK++u0xUDl4jgZPI2xUxcYqY5mjVrADFeQYIOpI3gZdCuTUoe2xcLaXr5ygrglT235n52RHyGSdXHeFfYC9DmUMwnincZOFYvLZ8A8o305l9J5vjOLhg1WFhpI7oEuKQUgdZCtQrhwQKBgQDDS+jGST8udkkB2TVdVAq1NBq84MVb2+VUdp3bp7cgXcnBFw8oZBhwUeEM7a/dMCTSWhDCsuMyDmE6WrQFF+rZU6nBYDeNotydweClR9Brln7qwDT+hbAtJ0gmxYg2wLMM2jCVFvcnkC+hczNvt0itN0XC8hop5TPVcfE/93IpmwKBgQCtZrp+Oooeb1nGuwSurKdotaBmW0fIS5KWpZUo2gVCpSbvByqK1soFrmy35hm49/9aTACu3nJ6UxAFIxfvt6jCamsNAWji7ftVVz+FLJi1v/fHHZbdy5b4rgZ+9zdDAlEjlR/GS3RNUMWIdjZJQIThyHbiKsyeheJXGhIT4dRzoQKBgHSWWHwnNgSysJrd5LG2fj32wQ+Iz8kq2Rk3Rr3evcAgvVT8QxxFxSEogEWLj7VoDFNXWTIiQOedFgYUJ+vyf00GWQ0MN53iX/n9x/JjkNTpnxLdc8WOYcJS9QvQWKT3HOzLRL18XEfOF+E2OLq0nDpsCMV8aoogPnVp9C/PtOOJAoGAN9HPDR15Iu0DgHbpvfU0ev+k3+5YgEDbsoUhLCJq+RZDH0U2S7VzGTsaImT/OM0UtZOr0J8pSPl+ObkfVnrP563sQiaHBi5H7yQD/bHqgu+GKuH6k/Ga6vjSfILGllqjlgnGTcYybUUoIZK0TQZpAGnQ42OVtR4yS4nH8gCLrKECgYBGspcRwVHOYInJsmilWfgOYe+9mgY98YSu9ayDMjxxAfo5WTqs0oOeg8uTqYldCZ3J1Y6i5nMz6y2XXkkW9VTnOSfxlMIpgV0TL0kBA1mLXqkb5mJJa5O3mha6jR3EzugbOeWpzaHM180pqSfOKn+GDqVUcu3Z1aiTXB+J9H61uA==
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhEiq0jGmFUKmfBw84oDYZbDE4ryNMS7p71QUaLanidscC2X90MSH2EDGabrV13m8H4ArIqZLkxoL7n89ikzcBFaNvbB/6BkcHlETvNgzDaE5rWTwt1rnDVwfsmfYPlGy8/5pKxAi4MSwh6TS6ujcqhLL0EIY/wfRlYug1Z9kCR04Axen/1dJ1tNdom9yCgw5u/QrAv/0OQyWgH/FIEK/c6VwB/C2BWZGM3WzP3CyjpPRLVxHkT9Mue5s5IZfpeIBfg5lZl7Gplf3e2zrEz1rXVlkmDVRaErw97qynelpvqfkWOwa87t8ylHa4/B2dpVaQXR4o6/n7Je4oLL/ltjLewIDAQAB

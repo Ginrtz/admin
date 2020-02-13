@@ -10,7 +10,7 @@
 	<div class="wrap">
 		<div class="logo">
 			<h1>404</h1>
-			<p>哦豁 - 页面找不到了</p>
+			<p>糟糕 - 页面找不到了</p>
 			<div class="sub">
 				<p>
 					<a href="${ctx }/home">回到首页</a>
