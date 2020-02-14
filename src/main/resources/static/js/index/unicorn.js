@@ -170,7 +170,6 @@ $(function() {
 	$(document).on('click', '.linkmenu > a', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('href');
-		
 	});
 
 	$('#sidebar li.submenu ul').on('mouseleave', function() {
