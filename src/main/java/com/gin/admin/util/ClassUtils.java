@@ -173,6 +173,24 @@ public class ClassUtils {
 			log.error("Can not set value on " + classOfType.getName() + "." + fieldName, e);
 		}
 	}
+	
+	/**
+	 * 强制设置类或对象属性的值
+	 *
+	 * @param classOfType
+	 * @param fieldName
+	 * @param obj
+	 * @param value
+	 */
+	public static void setFieldValue(Class<?> classOfType, Field field, Object obj, Object value) {
+		try {
+			field.setAccessible(true);
+			field.set(obj, value);
+			field.setAccessible(false);
+		} catch (Exception e) {
+			log.error("Can not set value on " + classOfType.getName() + "." + field.getName(), e);
+		}
+	}
 
 	/**
 	 * 获取类或对象属性的值

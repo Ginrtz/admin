@@ -2,8 +2,6 @@ package com.gin.admin.dao;
 
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.MessageFormat;
@@ -15,22 +13,19 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.gin.admin.dao.model.Page;
+import com.gin.admin.dao.model.ResultRowMapper;
 import com.gin.admin.util.ClassUtils;
-import com.gin.admin.util.StringUtils;
 
 @Repository
 public class BaseDao {
@@ -70,34 +65,32 @@ public class BaseDao {
 				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
-				return jdbcTemplate.query(sql, parameters, new ResultRowMapper<>(clazz));
+				return jdbcTemplate.query(sql, parameters, new ResultRowMapper<T>(clazz));
 			} else {
-				return jdbcTemplate.query(sql, new ResultRowMapper<>(clazz));
+				return jdbcTemplate.query(sql, new ResultRowMapper<T>(clazz));
 			}
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	protected class ResultRowMapper<T> implements RowMapper<T> {
-		private Class<T> clazz;
-
-		public ResultRowMapper(Class<T> clazz) {
-			this.clazz = clazz;
-		}
-
-		@Override
-		public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-			T obj = ClassUtils.newInstance(clazz);
-			ResultSetMetaData metaData = rs.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			for (int i = 1; i <= columnCount; i++) {
-				String columnName = metaData.getColumnName(i);
-				ClassUtils.setFieldValue(clazz, StringUtils.toJavaName(columnName), obj, rs.getObject(i));
+	/**
+	 * 根据sql语句，返回Map对象集合
+	 */
+	public List<Map<String, Object>> findList(final String sql, Object... parameters) {
+		try {
+			if (logger.isDebugEnabled()) {
+				logger.debug("[BaseDao]\tsql：" + sql);
+				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 			}
-			return obj;
+			if (parameters != null) {
+				return jdbcTemplate.queryForList(sql, parameters);
+			} else {
+				return jdbcTemplate.queryForList(sql);
+			}
+		} catch (Exception e) {
+			return null;
 		}
-
 	}
 
 	/**
@@ -115,9 +108,9 @@ public class BaseDao {
 				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
-				return jdbcTemplate.queryForObject(sql, parameters, resultBeanMapper(clazz));
+				return jdbcTemplate.queryForObject(sql, parameters, new ResultRowMapper<T>(clazz));
 			} else {
-				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz));
+				return jdbcTemplate.queryForObject(sql, new ResultRowMapper<T>(clazz));
 			}
 		} catch (Exception e) {
 			return null;
@@ -128,7 +121,7 @@ public class BaseDao {
 	 * 根据sql语句，返回Map对象
 	 *
 	 */
-	public Map<String, Object> findForMap(final String sql, Object... parameters) {
+	public Map<String, Object> find(final String sql, Object... parameters) {
 		try {
 			if (logger.isDebugEnabled()) {
 				logger.debug("[BaseDao]\tsql：" + sql);
@@ -145,38 +138,20 @@ public class BaseDao {
 	}
 
 	/**
-	 * 根据sql语句，返回Map对象集合
-	 */
-	public List<Map<String, Object>> findForListMap(final String sql, Object... parameters) {
-		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
-			}
-			if (parameters != null) {
-				return jdbcTemplate.queryForList(sql, parameters);
-			} else {
-				return jdbcTemplate.queryForList(sql);
-			}
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	/**
-	 * 执行sql<br>
+	 * 执行sql语句<br>
 	 */
 	public int execute(final String sql) {
-		return executeWithBean(sql, null);
+		return execute(sql, null);
 	}
 
 	/**
 	 * 执行sql
 	 *
-	 * @param sql  sql语句，占位符为冒号+参数名格式（update user set first_name = :firstName where id = 1）
-	 * @param bean 参数对象,对象属性名要和sql占位符相同，如果参数为Map，Map的key要和sql占位符相同
+	 * @param sql  sql语句，占位符为冒号+参数名格式（update user set first_name = :firstName where
+	 *             id = 1）
+	 * @param bean 参数实体对象,对象属性名要和sql占位符相同，如果参数为Map，Map的key要和sql占位符相同
 	 */
-	public int executeWithBean(final String sql, Object bean) {
+	public int execute(final String sql, Object bean) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
 			logger.debug("[BaseDao]\tparameters：" + bean);
@@ -223,7 +198,7 @@ public class BaseDao {
 	 * @param sql        sql中占位符使用冒号+参数名
 	 * @param parameters 参数集合，集合中每个元素为参数对象,对象属性名和sql占位符相同，Map类参数的key与占位符相同
 	 */
-	public int[] batchUpdateWithBean(final String sql, List<? extends Object> parameters) {
+	public int[] batchUpdateWithBean(final String sql, List<?> parameters) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
 			logger.debug("[BaseDao]\tparameters：" + parameters);
@@ -287,10 +262,6 @@ public class BaseDao {
 		}
 	}
 
-	private <T> BeanPropertyRowMapper<T> resultBeanMapper(Class<T> clazz) {
-		return BeanPropertyRowMapper.newInstance(clazz);
-	}
-
 	private BeanPropertySqlParameterSource paramBeanMapper(Object object) {
 		return new BeanPropertySqlParameterSource(object);
 	}
@@ -298,94 +269,90 @@ public class BaseDao {
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据
 	 */
-	public List<Map<String, Object>> findForJdbc(String sql, int page, int rows) {
+	public Page<Map<String, Object>> findPage(String sql, int page, int pageSize) {
+		Page<Map<String, Object>> p = new Page<>();
+		p.setPage(page);
+		p.setPageSize(pageSize);
+		int total = findTotal(sql).intValue();
+		p.setTotal(total);
+		p.setTotalPage((int) Math.ceil((float) total / pageSize));
 		// 封装分页SQL
-		sql = createPageSql(sql, page, rows);
+		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
 		}
-		return this.jdbcTemplate.queryForList(sql);
+		List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+		p.setData(list);
+		return p;
 	}
 
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据
 	 */
-	public List<Map<String, Object>> findForListPage(String sql, int page, int rows, Object... parameters) {
+	public Page<Map<String, Object>> findPage(String sql, int page, int pageSize, Object... parameters) {
+		Page<Map<String, Object>> p = new Page<>();
+		p.setPage(page);
+		p.setPageSize(pageSize);
+		int total = findTotal(sql, parameters).intValue();
+		p.setTotal(total);
+		p.setTotalPage((int) Math.ceil((float) total / pageSize));
 		// 封装分页SQL
-		sql = createPageSql(sql, page, rows);
+		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
 			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 		}
-		return findForListMap(sql, parameters);
-	}
-
-	/**
-	 * 使用指定的检索标准检索数据并返回全部数据
-	 */
-	public List<Map<String, Object>> findForList(String sql, Object... parameters) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
-		}
-		return this.jdbcTemplate.queryForList(sql, parameters);
-	}
-
-	/**
-	 * 使用指定的检索标准检索数据并分页返回数据
-	 *
-	 */
-	public <T> List<T> findObjForListPage(Class<T> clazz, String sql, int page, int rows) {
-		List<T> rsList = new ArrayList<>();
-		// 封装分页SQL
-		sql = createPageSql(sql, page, rows);
-		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-		}
-		List<Map<String, Object>> mapList = jdbcTemplate.queryForList(sql);
-		T po = null;
-		for (Map<String, Object> m : mapList) {
-			try {
-				BeanUtils.populate(po, m);
-				rsList.add(po);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return rsList;
+		List<Map<String, Object>> list = findList(sql, parameters);
+		p.setData(list);
+		return p;
 	}
 
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据
 	 *
 	 */
-	public <T> List<T> findObjForListPage(Class<T> clazz, String sql, int page, int rows, Object... parameters) {
+	public <T> Page<T> findPage(Class<T> clazz, String sql, int page, int pageSize) {
+		Page<T> p = new Page<>();
+		p.setPage(page);
+		p.setPageSize(pageSize);
+		int total = findTotal(sql).intValue();
+		p.setTotal(total);
+		p.setTotalPage((int) Math.ceil((float) total / pageSize));
 		// 封装分页SQL
-		sql = createPageSql(sql, page, rows);
+		sql = createPageSql(sql, page, pageSize);
+		if (logger.isDebugEnabled()) {
+			logger.debug("[BaseDao]\tsql：" + sql);
+		}
+		List<T> list = findList(clazz, sql);
+		p.setData(list);
+		return p;
+	}
+
+	/**
+	 * 查询分页
+	 */
+	public <T> Page<T> findPage(Class<T> clazz, String sql, int page, int pageSize, Object... parameters) {
+		Page<T> p = new Page<>();
+		p.setPage(page);
+		p.setPageSize(pageSize);
+		int total = findTotal(sql, parameters).intValue();
+		p.setTotal(total);
+		p.setTotalPage((int) Math.ceil((float) total / pageSize));
+		// 封装分页SQL
+		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
 			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
 		}
-		return jdbcTemplate.query(sql, new ResultRowMapper<>(clazz), parameters);
-	}
-
-	public Map<String, Object> findOneForJdbc(String sql, Object... parameters) {
-		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
-			}
-			return jdbcTemplate.queryForMap(sql, parameters);
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
+		List<T> list = findList(clazz, sql, parameters);
+		p.setData(list);
+		return p;
 	}
 
 	/**
-	 * 使用指定的检索标准检索数据并分页返回数据For JDBC-采用预处理方式
-	 *
+	 * 查询总数
 	 */
-	public Long countForJdbc(String sql, Object... parameters) {
+	public Long findTotal(String sql, Object... parameters) {
 		sql = createCountSql(sql);
 		if (logger.isDebugEnabled()) {
 			logger.debug("[BaseDao]\tsql：" + sql);
@@ -406,17 +373,18 @@ public class BaseDao {
 	/**
 	 * 按照数据库类型，封装SQL
 	 */
-	private String createPageSql(String sql, int page, int rows) {
-		int beginNum = (page - 1) * rows;
+	private String createPageSql(String sql, int page, int pageSize) {
+		int beginNum = (page - 1) * pageSize;
 		if (DATABSE_TYPE_MYSQL.equals(dbType)) {
-			sql = MessageFormat.format(MYSQL_SQL, sql, beginNum, rows);
+			sql = MessageFormat.format(MYSQL_SQL, sql, beginNum, pageSize);
 		} else {
-			int beginIndex = (page - 1) * rows;
-			int endIndex = beginIndex + rows;
+			int beginIndex = (page - 1) * pageSize;
+			int endIndex = beginIndex + pageSize;
 			if (DATABSE_TYPE_ORACLE.equals(dbType)) {
 				sql = MessageFormat.format(ORACLE_SQL, sql, endIndex, beginIndex);
 			} else if (DATABSE_TYPE_SQLSERVER.equals(dbType)) {
-				sql = MessageFormat.format(SQLSERVER_SQL, sql.substring(getAfterSelectInsertPoint(sql)), endIndex, beginIndex);
+				sql = MessageFormat.format(SQLSERVER_SQL, sql.substring(getAfterSelectInsertPoint(sql)), endIndex,
+						beginIndex);
 			}
 		}
 		return sql;
@@ -430,10 +398,12 @@ public class BaseDao {
 
 	/**
 	 * 去除sql的order by
+	 * 
 	 * @param sql
 	 * @return
 	 */
 	private static String removeOrders(String sql) {
-		return sql.replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+(?=\\))", "").replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+", "");
+		return sql.replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+(?=\\))", "").replaceAll("order\\s+by[\\w|\\W|\\s|\\S]+",
+				"");
 	}
 }

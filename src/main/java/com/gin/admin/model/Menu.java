@@ -2,7 +2,8 @@ package com.gin.admin.model;
 
 import java.io.Serializable;
 
-import com.gin.admin.model.base.Tree;
+import com.gin.admin.dao.model.Tree;
+
 
 /**
  * 菜单

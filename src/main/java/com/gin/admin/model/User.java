@@ -95,6 +95,7 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", nickName=" + nickName
-				+ ", qqNo=" + qqNo + ", wxNo=" + wxNo + ", mobile=" + mobile + ", email=" + email+ ", avatar=" + avatar + "]";
+				+ ", qqNo=" + qqNo + ", wxNo=" + wxNo + ", mobile=" + mobile + ", email=" + email + ", avatar=" + avatar
+				+ "]";
 	}
 }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gin.admin.model.base.Tree;
+import com.gin.admin.dao.model.Tree;
 
 public class TreeBeanUtil {
 	static Logger logger = LoggerFactory.getLogger(TreeBeanUtil.class);
