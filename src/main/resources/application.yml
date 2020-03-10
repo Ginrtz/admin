@@ -34,7 +34,7 @@ spring:
       nodes: 49.233.202.61:7001,49.233.202.61:7002,49.233.202.61:7003,49.233.202.61:7004,49.233.202.61:7005,49.233.202.61:7006
       timeout: 3000
       max-redirects: 3
-    #password: 123450
+    password: Donging!@01
     jedis:
       pool:
         max-active: 5

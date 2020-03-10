@@ -1,4 +1,4 @@
-package com.gin.admin.util;
+package com.gin.admin.jwt;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -10,24 +10,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
 import com.gin.admin.model.User;
 import com.gin.admin.model.base.JsonResult;
+import com.gin.admin.util.HttpUtil;
+import com.gin.admin.util.JsonUtil;
+import com.gin.admin.util.StringUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
- * jwt token工具类
+ * jwt token管理工具类
  *
  * @author o1760
  */
 @Component
-public class JwtUtil {
+public class JwtManager {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
-	/** token秘钥 */
+	/** token秘钥，随机生成 */
 	private final static String base64EncodedSecretKey = "MWEyYjNjNGQ1ZQ==";
 	/** 过期时间,测试使用十分钟 */
 	private final static long TOKEN_EXPIRES_MINUTES = 10;
@@ -50,7 +52,7 @@ public class JwtUtil {
 				.compact(); // 生成
 		redisTemplate.opsForValue().set(user.getUserName(), token, TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);// 同一用户只能有一个有效token（单一客户端登录）
 		redisTemplate.opsForValue().set(sessionId, token, TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);// token与session绑定
-		redisTemplate.opsForValue().set(token, JSON.toJSONString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);// token绑定用户信息
+		redisTemplate.opsForValue().set(token, JsonUtil.toJsonString(user), TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);// token绑定用户信息
 		return token;
 	}
 
@@ -62,7 +64,7 @@ public class JwtUtil {
 		String token = getCurrToken(request);
 		user_json = (String) redisTemplate.boundValueOps(token).get();
 		if (StringUtils.isNotEmpty(user_json)) {
-			return JSON.parseObject(user_json, User.class);
+			return JsonUtil.parseObject(user_json, User.class);
 		}
 		return null;
 	}
@@ -71,7 +73,7 @@ public class JwtUtil {
 	 * 获取当前token
 	 */
 	private String getCurrToken(HttpServletRequest request) {
-		if (RequestUtil.isAjax(request)) {
+		if (HttpUtil.isAjax(request)) {
 			return request.getHeader(TOKEN_KEY);
 		}
 		return (String) redisTemplate.boundValueOps(request.getSession().getId()).get();

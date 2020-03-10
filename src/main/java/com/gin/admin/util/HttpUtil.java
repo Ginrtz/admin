@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,11 +26,17 @@ import org.apache.http.util.EntityUtils;
 
 /**
  * 发起HTTP请求工具类
- * 
+ *
  * @author o1760
  *
  */
 public class HttpUtil {
+	/**
+	 * 发起GET请求
+	 *
+	 * @param url 请求地址
+	 * @return 响应报文
+	 */
 	public static String doGet(String url) {
 		CloseableHttpClient httpClient = null;
 		CloseableHttpResponse response = null;
@@ -75,6 +83,13 @@ public class HttpUtil {
 		return result;
 	}
 
+	/**
+	 * 发起POST请求
+	 *
+	 * @param url      请求地址
+	 * @param paramMap 请求参数
+	 * @return 响应报文
+	 */
 	public static String doPost(String url, Map<String, Object> paramMap) {
 		CloseableHttpClient httpClient = null;
 		CloseableHttpResponse httpResponse = null;
@@ -140,5 +155,16 @@ public class HttpUtil {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 判断请求是否是ajax请求
+	 *
+	 * @param request HttpServletRequest对象
+	 * @return 是否是ajax请求，true or false
+	 */
+	public static boolean isAjax(HttpServletRequest request) {
+		return request.getHeader("x-requested-with") != null
+				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest");
 	}
 }

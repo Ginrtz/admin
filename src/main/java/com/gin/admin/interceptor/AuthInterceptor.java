@@ -9,31 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.alibaba.fastjson.JSON;
+import com.gin.admin.jwt.JwtManager;
 import com.gin.admin.model.base.JsonResult;
-import com.gin.admin.util.JwtUtil;
-import com.gin.admin.util.RequestUtil;
+import com.gin.admin.util.HttpUtil;
+import com.gin.admin.util.JsonUtil;
 
 /**
- * 登录拦截器
+ * 请求鉴权拦截器
  *
  * @author o1760
  */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 	@Autowired
-	private JwtUtil jwtUtil;
+	private JwtManager jwtUtil;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
 		// 验证token
 		JsonResult result = jwtUtil.checkToken(request);
 		if (result.getCode() != JsonResult.CODE_SUCCESS) {
-			if (RequestUtil.isAjax(request)) {
+			if (HttpUtil.isAjax(request)) {
 				response.setCharacterEncoding("UTF-8");
 				response.setContentType("application/json; charset=utf-8");
 				PrintWriter writer = response.getWriter();
-				writer.write(JSON.toJSONString(result));
+				writer.write(JsonUtil.toJsonString(result));
 				writer.flush();
 				writer.close();
 			} else {

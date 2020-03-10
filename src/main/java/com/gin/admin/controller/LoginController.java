@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gin.admin.dao.BaseDao;
+import com.gin.admin.jwt.JwtManager;
 import com.gin.admin.model.User;
 import com.gin.admin.model.base.JsonResult;
-import com.gin.admin.util.JwtUtil;
 import com.gin.admin.util.RSAUtils;
 import com.gin.admin.util.StringUtils;
 
@@ -20,7 +20,7 @@ public class LoginController {
 	@Autowired
 	private BaseDao dao;
 	@Autowired
-	private JwtUtil jwtUtil;
+	private JwtManager jwtUtil;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
