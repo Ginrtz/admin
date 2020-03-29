@@ -27,9 +27,14 @@ import com.gin.admin.dao.model.Page;
 import com.gin.admin.dao.model.ResultRowMapper;
 import com.gin.admin.util.ClassUtils;
 
+/**
+ * jdbc dao
+ * @author o1760
+ *
+ */
 @Repository
-public class BaseDao {
-	Logger logger = LoggerFactory.getLogger(BaseDao.class);
+public class JdbcDao {
+	Logger logger = LoggerFactory.getLogger(JdbcDao.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
@@ -61,8 +66,8 @@ public class BaseDao {
 	public <T> List<T> findList(final Class<T> clazz, final String sql, Object... parameters) {
 		try {
 			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+				logger.debug("[JdbcDao]\tsql：" + sql);
+				logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
 				return jdbcTemplate.query(sql, parameters, new ResultRowMapper<T>(clazz));
@@ -80,8 +85,8 @@ public class BaseDao {
 	public List<Map<String, Object>> findList(final String sql, Object... parameters) {
 		try {
 			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+				logger.debug("[JdbcDao]\tsql：" + sql);
+				logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
 				return jdbcTemplate.queryForList(sql, parameters);
@@ -104,8 +109,8 @@ public class BaseDao {
 	public <T> T find(Class<T> clazz, final String sql, Object... parameters) {
 		try {
 			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+				logger.debug("[JdbcDao]\tsql：" + sql);
+				logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
 				return jdbcTemplate.queryForObject(sql, parameters, new ResultRowMapper<T>(clazz));
@@ -118,14 +123,14 @@ public class BaseDao {
 	}
 
 	/**
-	 * 根据sql语句，返回Map对象
+	 * 根据sql语句，返回Map对象（一条数据）
 	 *
 	 */
 	public Map<String, Object> find(final String sql, Object... parameters) {
 		try {
 			if (logger.isDebugEnabled()) {
-				logger.debug("[BaseDao]\tsql：" + sql);
-				logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+				logger.debug("[JdbcDao]\tsql：" + sql);
+				logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 			}
 			if (parameters != null) {
 				return jdbcTemplate.queryForMap(sql, parameters);
@@ -153,8 +158,8 @@ public class BaseDao {
 	 */
 	public int execute(final String sql, Object bean) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + bean);
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + bean);
 		}
 		if (bean != null) {
 			return namedJdbcTemplate.update(sql, paramBeanMapper(bean));
@@ -171,8 +176,8 @@ public class BaseDao {
 	 */
 	public int executeWithParams(final String sql, Object... parameters) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 		}
 		if (parameters != null) {
 			return jdbcTemplate.update(sql, parameters);
@@ -182,7 +187,7 @@ public class BaseDao {
 	}
 
 	/**
-	 * 批量执行sql
+	 * 批量更新
 	 *
 	 * @param sql        sql语句，sql中占位符使用?
 	 * @param parameters 参数集合，集合中每个元素为参数列表，和sql中占位符位置对应
@@ -193,15 +198,15 @@ public class BaseDao {
 	}
 
 	/**
-	 * 批量执行sql
+	 * 批量更新
 	 *
 	 * @param sql        sql中占位符使用冒号+参数名
 	 * @param parameters 参数集合，集合中每个元素为参数对象,对象属性名和sql占位符相同，Map类参数的key与占位符相同
 	 */
 	public int[] batchUpdateWithBean(final String sql, List<?> parameters) {
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + parameters);
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + parameters);
 		}
 		DefaultPreparedStatementSetter pss = new DefaultPreparedStatementSetter(sql, parameters);
 		String exesql = sql.replaceAll("\\:(\\w+)", "?");
@@ -279,7 +284,7 @@ public class BaseDao {
 		// 封装分页SQL
 		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tsql：" + sql);
 		}
 		List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
 		p.setData(list);
@@ -299,8 +304,8 @@ public class BaseDao {
 		// 封装分页SQL
 		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 		}
 		List<Map<String, Object>> list = findList(sql, parameters);
 		p.setData(list);
@@ -321,7 +326,7 @@ public class BaseDao {
 		// 封装分页SQL
 		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tsql：" + sql);
 		}
 		List<T> list = findList(clazz, sql);
 		p.setData(list);
@@ -341,8 +346,8 @@ public class BaseDao {
 		// 封装分页SQL
 		sql = createPageSql(sql, page, pageSize);
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 		}
 		List<T> list = findList(clazz, sql, parameters);
 		p.setData(list);
@@ -355,8 +360,8 @@ public class BaseDao {
 	public Long findTotal(String sql, Object... parameters) {
 		sql = createCountSql(sql);
 		if (logger.isDebugEnabled()) {
-			logger.debug("[BaseDao]\tsql：" + sql);
-			logger.debug("[BaseDao]\tparameters：" + Arrays.asList(parameters));
+			logger.debug("[JdbcDao]\tsql：" + sql);
+			logger.debug("[JdbcDao]\tparameters：" + Arrays.asList(parameters));
 		}
 		if (parameters == null) {
 			return jdbcTemplate.queryForObject(sql, Long.class);

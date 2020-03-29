@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gin.admin.dao.BaseDao;
+import com.gin.admin.dao.JdbcDao;
 import com.gin.admin.jwt.JwtManager;
 import com.gin.admin.model.User;
 import com.gin.admin.model.base.JsonResult;
@@ -18,7 +18,7 @@ import com.gin.admin.util.StringUtils;
 @Controller
 public class LoginController {
 	@Autowired
-	private BaseDao dao;
+	private JdbcDao dao;
 	@Autowired
 	private JwtManager jwtUtil;
 
